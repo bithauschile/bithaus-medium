@@ -9,19 +9,19 @@ package cl.bithaus.medium.message.converters;
  *
  * @author jmakuc
  */
-public class MessageConverterException extends Exception {
+public class MessageTranslatorException extends Exception {
     
-    public MessageConverterException(String msg) {
+    public MessageTranslatorException(String msg) {
         
         super(msg);
     }
     
-    public MessageConverterException(Exception e) {
+    public MessageTranslatorException(Exception e) {
         
         super(e);
     }
     
-    public MessageConverterException(String msg, Exception e) {
+    public MessageTranslatorException(String msg, Exception e) {
         
         super(msg, e);
     }
