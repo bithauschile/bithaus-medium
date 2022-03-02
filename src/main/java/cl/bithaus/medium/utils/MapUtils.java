@@ -5,6 +5,10 @@
  */
 package cl.bithaus.medium.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.Properties;
 import java.util.TimeZone;
 
 /**
@@ -135,5 +140,18 @@ public class MapUtils {
             return null;
 
         return new BigDecimal(val.toString());
+    }    
+    
+    public static Map<Object,Object> loadPropertiesFile(String filename)
+            throws FileNotFoundException, IOException {
+
+        File file = new File(filename);
+        FileInputStream fis = new FileInputStream(file);
+        
+        Properties p = new Properties();
+        p.load(fis);
+                
+        return p;
+        
     }    
 }
