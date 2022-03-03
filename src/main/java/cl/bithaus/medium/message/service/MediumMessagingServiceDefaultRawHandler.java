@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Medium's default deserializer and message dispatcher
  * @author jmakuc
  */
 public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingServiceRawHandler {

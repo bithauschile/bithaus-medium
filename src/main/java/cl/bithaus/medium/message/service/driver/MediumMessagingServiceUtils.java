@@ -45,6 +45,7 @@ public class MediumMessagingServiceUtils {
         Map<String,String> headers = record.getHeaders();
         
         MediumMessage.Metadata metadata = new MediumMessage.Metadata();
+        metadata.setKey(record.getKey());
         metadata.setHeaders(headers);
         metadata.setRxTopic(record.getTopic());
         metadata.setSource(headers.get(MediumMessage.HEADER_MESSAGE_SOURCE));

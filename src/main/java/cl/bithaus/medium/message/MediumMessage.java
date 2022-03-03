@@ -5,7 +5,9 @@
  */
 package cl.bithaus.medium.message;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Medium Generic Message
@@ -25,14 +27,14 @@ public abstract class MediumMessage {
     
         this.uuid = uuid;
         this.metadata = new Metadata();
-        this.metadata.getHeaders().put(HEADER_MESSAGE_CLASS, this.getClass().getCanonicalName());
+        this.metadata.getHeaders().put(HEADER_MESSAGE_CLASS, this.getClass().getName());
     }
     
     public MediumMessage(String uuid, Metadata metadata) {
         
         this.uuid = uuid;
         this.metadata = metadata;
-        this.metadata.getHeaders().put(HEADER_MESSAGE_CLASS, this.getClass().getCanonicalName());
+        this.metadata.getHeaders().put(HEADER_MESSAGE_CLASS, this.getClass().getName());
     }
 
     public Metadata getMetadata() {
@@ -63,7 +65,7 @@ public abstract class MediumMessage {
     public static class Metadata {
         
         private String key;
-        private Map<String,String> headers;
+        private Map<String,String> headers = new HashMap<>();
         private Long timestamp;
         private String source;
         private String target;
@@ -124,6 +126,55 @@ public abstract class MediumMessage {
 
         public void setTxTopic(String txTopic) {
             this.txTopic = txTopic;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 5;
+            hash = 67 * hash + Objects.hashCode(this.key);
+            hash = 67 * hash + Objects.hashCode(this.headers);
+            hash = 67 * hash + Objects.hashCode(this.timestamp);
+            hash = 67 * hash + Objects.hashCode(this.source);
+            hash = 67 * hash + Objects.hashCode(this.target);
+            hash = 67 * hash + Objects.hashCode(this.rxTopic);
+            hash = 67 * hash + Objects.hashCode(this.txTopic);
+            return hash;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final Metadata other = (Metadata) obj;
+            if (!Objects.equals(this.key, other.key)) {
+                return false;
+            }
+            if (!Objects.equals(this.source, other.source)) {
+                return false;
+            }
+            if (!Objects.equals(this.target, other.target)) {
+                return false;
+            }
+            if (!Objects.equals(this.rxTopic, other.rxTopic)) {
+                return false;
+            }
+            if (!Objects.equals(this.txTopic, other.txTopic)) {
+                return false;
+            }
+            if (!Objects.equals(this.headers, other.headers)) {
+                return false;
+            }
+            if (!Objects.equals(this.timestamp, other.timestamp)) {
+                return false;
+            }
+            return true;
         }
         
         
