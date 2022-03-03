@@ -6,10 +6,6 @@ package cl.bithaus.medium.message.service.driver;
 
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import java.util.Map;
-import org.apache.kafka.common.config.AbstractConfig;
-import org.apache.kafka.common.config.ConfigDef;
-import org.apache.kafka.common.config.ConfigDef.Importance;
-import org.apache.kafka.common.config.ConfigDef.Type;
 
 /**
  * Connector class for MediumMessagingService and underlying Kafka

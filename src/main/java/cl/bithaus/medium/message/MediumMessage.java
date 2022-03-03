@@ -40,6 +40,10 @@ public abstract class MediumMessage {
     }
 
     public void setMetadata(Metadata metadata) {
+        
+        if(metadata == null)
+            throw new IllegalArgumentException("Metadata cannot be null");
+        
         this.metadata = metadata;
     }         
 
