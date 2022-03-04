@@ -10,8 +10,11 @@
  */
 package cl.bithaus.medium.message.service.driver;
 
+import cl.bithaus.medium.record.MediumProducerRecord;
+import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.message.MediumMessage;
 import com.google.gson.Gson;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,15 +25,16 @@ public class MediumMessagingServiceUtils {
         
     private static final Gson gson = new Gson();
     
-    public static MediumMessagingServiceProducerRecord fromMedium(MediumMessage message) {
+    public static MediumProducerRecord fromMedium(MediumMessage message) {
         
         String key = message.getMetadata().getKey();
         String value = gson.toJson(message);
         String topic = message.getMetadata().getTxTopic();
-        Map<String,String> headers = message.getMetadata().getHeaders();
+        Map<String,String> headers = new HashMap<>(message.getMetadata().getHeaders());
         Long timestamp = message.getMetadata().getTimestamp();        
         
-        return new MediumMessagingServiceProducerRecord(key, value, topic, headers, timestamp);
+        
+        return new MediumProducerRecord(key, value, topic, headers, timestamp);
     }
     
     /**
@@ -40,7 +44,7 @@ public class MediumMessagingServiceUtils {
      * @param record incoming record
      * @return deserialized Medium message
      */
-    public static <M extends MediumMessage> M toMedium(Class<M> messageClass, MediumMessagingServiceConsumerRecord record) {
+    public static <M extends MediumMessage> M toMedium(Class<M> messageClass, MediumConsumerRecord record) {
         
         Map<String,String> headers = record.getHeaders();
         
@@ -58,4 +62,5 @@ public class MediumMessagingServiceUtils {
         return message;
                 
     }
+    
 }

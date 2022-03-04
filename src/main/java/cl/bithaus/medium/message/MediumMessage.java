@@ -84,8 +84,16 @@ public abstract class MediumMessage {
             return headers;
         }
 
+        /**
+         * Replaces the internal headers map and populates "source" and "target" fields.
+         * @param headers 
+         */
         public void setHeaders(Map<String, String> headers) {
             this.headers = headers;
+            
+            this.setSource(headers.get(HEADER_MESSAGE_SOURCE));
+            this.setTarget(headers.get(HEADER_MESSAGE_TARGET));
+            
         }
 
         public Long getTimestamp() {
@@ -100,16 +108,27 @@ public abstract class MediumMessage {
             return source;
         }
 
+        /**
+         * Sets the source system field and updates the headers
+         * @param source 
+         */
         public void setSource(String source) {
             this.source = source;
+            this.headers.put(HEADER_MESSAGE_SOURCE, source);
         }
 
         public String getTarget() {
             return target;
         }
 
+        /**
+         * Sets the target system field and updates the headers
+         * @param target 
+         */
+        
         public void setTarget(String target) {
             this.target = target;
+            this.headers.put(HEADER_MESSAGE_TARGET, target);
         }
 
         public String getRxTopic() {

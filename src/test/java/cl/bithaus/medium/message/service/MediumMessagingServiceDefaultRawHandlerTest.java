@@ -11,7 +11,7 @@
 package cl.bithaus.medium.message.service;
 
 import cl.bithaus.medium.message.exception.MediumMessageListenerException;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceConsumerRecord;
+import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.utils.test.TestMessage;
 import cl.bithaus.medium.utils.test.TestRecordGenerator;
 import com.google.gson.Gson;
@@ -62,7 +62,7 @@ public class MediumMessagingServiceDefaultRawHandlerTest {
         
         TestMessage testMessage = new TestMessage("this is a test");        
         
-        MediumMessagingServiceConsumerRecord record = TestRecordGenerator.generateConsumerRecord(testMessage);
+        MediumConsumerRecord record = TestRecordGenerator.generateConsumerRecord(testMessage);
         MediumMessagingServiceDefaultRawHandler instance = new MediumMessagingServiceDefaultRawHandler();
         
         AtomicReference<TestMessage> dest = new AtomicReference<>();

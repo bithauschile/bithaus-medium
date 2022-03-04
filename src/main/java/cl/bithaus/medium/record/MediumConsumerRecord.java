@@ -8,18 +8,18 @@
  * portions of it unless previously authorized by writing by Bithaus Software Chile.
  * In any event, this notice must always be included verbatim with this file.
  */
-package cl.bithaus.medium.message.service.driver;
+package cl.bithaus.medium.record;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A message being produced into the underlying Kafka.
- * Abstraction layer to handle easily both {@link org.apache.kafka.clients.producer.ProducerRecord}
- * and {@link org.apache.kafka.connect.connector.SourceRecord}
+ * A message being consumed from the underlying Kafka.
+ * Abstraction layer to easily handle both {@link org.apache.kafka.clients.consumer.ConsumerRecord}
+ * and {@link org.apache.kafka.connect.connector.SinkRecord}
  * @author jmakuc
  */
-public class MediumMessagingServiceProducerRecord {
+public class MediumConsumerRecord {
     
     private final String key;
     private final String value;
@@ -32,9 +32,9 @@ public class MediumMessagingServiceProducerRecord {
      * Constructor
      * @param key key to be used for balancing the message across partitions
      * @param value payload
-     * @param topic topic to publish the message to
+     * @param topic topic where the message came from
      */
-    public MediumMessagingServiceProducerRecord(String key, String value, String topic) {
+    public MediumConsumerRecord(String key, String value, String topic) {
         
         this.key = key;
         this.value = value;
@@ -49,10 +49,10 @@ public class MediumMessagingServiceProducerRecord {
      * Constructor
      * @param key key to be used for balancing the message across partitions
      * @param value payload
-     * @param topic topic to publish the message to
+     * @param topic topic where the message came from
      * @param headers Headers of the message     
      */
-    public MediumMessagingServiceProducerRecord(String key, String value, String topic, Map<String,String> headers) {
+    public MediumConsumerRecord(String key, String value, String topic, Map<String,String> headers) {
         
         this.key = key;
         this.value = value;
@@ -67,12 +67,12 @@ public class MediumMessagingServiceProducerRecord {
      * Constructor
      * @param key key to be used for balancing the message across partitions
      * @param value payload
-     * @param topic topic to publish the message to
+     * @param topic topic where the message came from
      * @param headers Headers of the message     
      * @param timestamp generation timestmap of the information inside the message. 
      *                  If provided, implies {@link TimestampType.CREATE_TIME}. If not, underlying Kafka will assign timestamp.
      */
-    public MediumMessagingServiceProducerRecord(String key, String value, String topic, Map<String,String> headers, Long timestamp) {
+    public MediumConsumerRecord(String key, String value, String topic, Map<String,String> headers, Long timestamp) {
         
         this.key = key;
         this.value = value;
@@ -86,13 +86,13 @@ public class MediumMessagingServiceProducerRecord {
      * Constructor
      * @param key key to be used for balancing the message across partitions
      * @param value payload
-     * @param topic topic to publish the message to
+     * @param topic topic where the message came from
      * @param headers Headers of the message     
      * @param timestamp generation timestmap of the information inside the message. 
      *                  If provided, implies {@link TimestampType.CREATE_TIME}. If not, underlying Kafka will assign timestamp.
      * @param partition Forced partition to be used
      */
-    public MediumMessagingServiceProducerRecord(String key, String value, String topic, Map<String,String> headers, Long timestamp, Integer partition) {
+    public MediumConsumerRecord(String key, String value, String topic, Map<String,String> headers, Long timestamp, Integer partition) {
         
         this.key = key;
         this.value = value;
@@ -150,6 +150,12 @@ public class MediumMessagingServiceProducerRecord {
     public Long getTimestamp() {
         return timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "MediumMessagingServiceConsumerRecord{" + "key=" + key + ", value=" + value + ", topic=" + topic + ", headers=" + headers + ", partition=" + partition + ", timestamp=" + timestamp + '}';
+    }
+    
     
     
     

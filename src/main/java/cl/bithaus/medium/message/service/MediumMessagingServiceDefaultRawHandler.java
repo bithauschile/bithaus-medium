@@ -14,7 +14,7 @@ package cl.bithaus.medium.message.service;
 import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceConsumerRecord;
+import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceUtils;
 import com.google.gson.Gson;
 import java.util.LinkedList;
@@ -41,7 +41,7 @@ public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingS
     }
 
     @Override
-    public void onData(MediumMessagingServiceConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
+    public void onData(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
         
         String key = record.getKey();
         Map<String,String> headers = record.getHeaders();

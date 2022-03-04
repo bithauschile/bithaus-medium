@@ -14,7 +14,7 @@ package cl.bithaus.medium.message.service;
 import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceConsumerRecord;
+import cl.bithaus.medium.record.MediumConsumerRecord;
 
 /**
  * Handler for raw record from the underlying Kafka
@@ -27,7 +27,7 @@ public interface MediumMessagingServiceRawHandler {
      * @param record received message
      * @throws MediumMessagingServiceException 
      */
-    public void onData(MediumMessagingServiceConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException;
+    public void onData(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException;
     
     /**
      * Adds a message listener for a specific message type

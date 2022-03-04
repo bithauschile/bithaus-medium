@@ -77,13 +77,9 @@ public class TestMessage extends MediumMessage {
             return false;
         }
         
-        if(!Objects.equals(this.getMetadata(), other.getMetadata())){
-            return false;
-        }
-        
-        return true;
+        return Objects.equals(this.getMetadata(), other.getMetadata());
     }
-    
+ 
     
     
     

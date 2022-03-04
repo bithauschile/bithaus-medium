@@ -8,10 +8,10 @@ import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.MediumMessage.Metadata;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceConsumerRecord;
+import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceProducerRecord;
+import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.utils.MapUtils;
 import com.google.gson.Gson;
 import java.io.FileNotFoundException;
@@ -90,7 +90,7 @@ public class MediumMessagingService {
             driver.init(driverConfigMap, new MediumMessagingServiceNetworkDriverCallback() {
 
                 @Override
-                public void onMessage(MediumMessagingServiceConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
+                public void onMessage(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
                 
                     rawHandler.onData(record);
                 }
@@ -203,8 +203,8 @@ public class MediumMessagingService {
             long timestamp = metadata.getTimestamp();
             
             
-            MediumMessagingServiceProducerRecord record = 
-                    new MediumMessagingServiceProducerRecord(key, value, topic, headers, timestamp);
+            MediumProducerRecord record = 
+                    new MediumProducerRecord(key, value, topic, headers, timestamp);
              
             driver.send(record);
             

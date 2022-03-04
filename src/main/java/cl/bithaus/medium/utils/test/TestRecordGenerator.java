@@ -12,8 +12,10 @@ package cl.bithaus.medium.utils.test;
 
 import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.MediumMessage.Metadata;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceConsumerRecord;
+import cl.bithaus.medium.record.MediumConsumerRecord;
+import cl.bithaus.medium.record.MediumProducerRecord;
 import com.google.gson.Gson;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,7 +26,7 @@ public class TestRecordGenerator {
 
     private static final Gson gson = new Gson();
     
-    public static MediumMessagingServiceConsumerRecord generateConsumerRecord(MediumMessage message) {
+    public static MediumConsumerRecord generateConsumerRecord(MediumMessage message) {
         
         Metadata md = message.getMetadata();
                
@@ -39,7 +41,23 @@ public class TestRecordGenerator {
         headers.put(MediumMessage.HEADER_MESSAGE_SOURCE, md.getSource());
         headers.put(MediumMessage.HEADER_MESSAGE_TARGET, md.getTarget());
                     
-        return new MediumMessagingServiceConsumerRecord(key, value, topic, headers, timestamp, partition);        
+        return new MediumConsumerRecord(key, value, topic, headers, timestamp, partition);        
         
     }
+    
+    public static MediumConsumerRecord fromProducerRecord(MediumProducerRecord pr) {
+        
+        String key = pr.getKey();
+        String value = pr.getValue();
+        String topic = pr.getTopic();
+        Long timestamp = pr.getTimestamp();
+        Integer partition = pr.getPartition();
+        
+        Map<String,String> headers = new HashMap<>();
+        headers.putAll(pr.getHeaders());
+        
+        return new MediumConsumerRecord(key, value, topic, headers, timestamp, partition);
+    }         
+    
+    
 }

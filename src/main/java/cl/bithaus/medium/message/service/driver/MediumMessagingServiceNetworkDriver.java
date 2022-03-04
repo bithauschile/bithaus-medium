@@ -4,6 +4,7 @@
  */
 package cl.bithaus.medium.message.service.driver;
 
+import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import java.util.Map;
 
@@ -26,9 +27,11 @@ public interface MediumMessagingServiceNetworkDriver {
      * @param record record to be sent
      * @throws MediumMessagingServiceException 
      */
-    public void send(MediumMessagingServiceProducerRecord record) throws MediumMessagingServiceException;
+    public void send(MediumProducerRecord record) throws MediumMessagingServiceException;
         
     public String[] getAvailableTopic();
+    
+    public boolean isReady();
     
     public void start() throws MediumMessagingServiceException;
     
