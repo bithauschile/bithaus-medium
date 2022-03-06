@@ -57,7 +57,27 @@ public class TestRecordGenerator {
         headers.putAll(pr.getHeaders());
         
         return new MediumConsumerRecord(key, value, topic, headers, timestamp, partition);
-    }         
+    }      
+    
+    public static MediumProducerRecord fromMediumMessage(MediumMessage message, String topic) {
+        
+        Metadata metadata = message.getMetadata();
+        metadata.setTxTopic(topic);
+
+        Map<String, String> headers = metadata.getHeaders();
+        headers.put(MediumMessage.HEADER_MESSAGE_CLASS, message.getClass().getName());
+        headers.put(MediumMessage.HEADER_MESSAGE_SOURCE, metadata.getSource());
+        headers.put(MediumMessage.HEADER_MESSAGE_TARGET, metadata.getTarget());
+
+        String key = metadata.getKey();
+        String value = new Gson().toJson(message);
+
+        long timestamp = metadata.getTimestamp();
+
+
+        return new MediumProducerRecord(key, value, topic, headers, timestamp);
+
+    }
     
     
 }

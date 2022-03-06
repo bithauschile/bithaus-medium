@@ -24,6 +24,16 @@
             <version>1.7.30</version>
         </dependency>
         
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core</artifactId>
+            <version>1.25.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-messaging-servicebus</artifactId>
+            <version>7.6.0</version>
+        </dependency>        
 
         
         <!-- TEST -->

@@ -19,7 +19,6 @@ import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
@@ -141,112 +140,5 @@ public class MediumMessagingServiceKafkaDriverTest {
         return map;
     }
     
-    
-//
-//    /**
-//     * Test of send method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testSend() throws Exception {
-//        System.out.println("send");
-//        MediumProducerRecord record = null;
-//        MediumMessagingServiceKafkaDriver instance = new MediumMessagingServiceKafkaDriver();
-//        instance.send(record);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getAvailableTopic method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testGetAvailableTopic() {
-//        System.out.println("getAvailableTopic");
-//        MediumMessagingServiceKafkaDriver instance = new MediumMessagingServiceKafkaDriver();
-//        String[] expResult = null;
-//        String[] result = instance.getAvailableTopic();
-//        assertArrayEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of isReady method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testIsReady() {
-//        System.out.println("isReady");
-//        MediumMessagingServiceKafkaDriver instance = new MediumMessagingServiceKafkaDriver();
-//        boolean expResult = false;
-//        boolean result = instance.isReady();
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of start method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testStart() throws Exception {
-//        System.out.println("start");
-//        MediumMessagingServiceKafkaDriver instance = new MediumMessagingServiceKafkaDriver();
-//        instance.start();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of stop method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testStop() throws Exception {
-//        System.out.println("stop");
-//        MediumMessagingServiceKafkaDriver instance = new MediumMessagingServiceKafkaDriver();
-//        instance.stop();
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of subscribe method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testSubscribe() throws Exception {
-//        System.out.println("subscribe");
-//        String[] topics = null;
-//        MediumMessagingServiceKafkaDriver instance = new MediumMessagingServiceKafkaDriver();
-//        instance.subscribe(topics);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of fromMediumProducerRecord method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testFromMediumProducerRecord() {
-//        System.out.println("fromMediumProducerRecord");
-//        MediumProducerRecord src = null;
-//        ProducerRecord<String, String> expResult = null;
-//        ProducerRecord<String, String> result = MediumMessagingServiceKafkaDriver.fromMediumProducerRecord(src);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getIterableHeaders method, of class MediumMessagingServiceKafkaDriver.
-//     */
-//    @Test
-//    public void testGetIterableHeaders() {
-//        System.out.println("getIterableHeaders");
-//        Map<String, String> headers = null;
-//        Iterable<Header> expResult = null;
-//        Iterable<Header> result = MediumMessagingServiceKafkaDriver.getIterableHeaders(headers);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//    
+     
 }

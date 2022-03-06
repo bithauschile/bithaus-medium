@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.Callable;
+import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.Semaphore;
@@ -60,7 +60,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
     
     private static final Logger logger = LoggerFactory.getLogger(MediumMessagingServiceKafkaDriver.class);
     
-    private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
+    private final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
     
     private MediumMessagingServiceNetworkDriverCallback callback;    
     
@@ -68,7 +68,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
     private Producer<String, String> producer;
     private Consumer<String, String> consumer;
     
-    private Semaphore startLock = new Semaphore(0);
+    private final Semaphore startLock = new Semaphore(0);
     
     private boolean ready = false;
 
@@ -204,12 +204,22 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
 
     @Override
     public String[] getAvailableTopic() {
-        return null;
+        
+        if(consumer == null)
+            return null;
+        
+        Set<TopicPartition> assignment = consumer.assignment();
+        List<String> topics = new LinkedList<>();
+        assignment.forEach((t) -> {
+            topics.add(t.topic());
+        });
+        
+        return topics.toArray(new String[topics.size()]);
     }
 
     @Override
     public boolean isReady() {
-        return true;
+        return this.ready;
     }
 
     @Override
@@ -321,7 +331,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
 
                         ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(1000));
 
-                        logger.trace("msgs " + records.count());
+                        logger.trace("Received messages " + records.count());
 
                         Iterator<ConsumerRecord<String,String>> i = records.iterator();
 
