@@ -12,6 +12,7 @@ package cl.bithaus.medium.record;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A message being consumed from the underlying Kafka.
@@ -155,6 +156,52 @@ public class MediumConsumerRecord {
     public String toString() {
         return "MediumMessagingServiceConsumerRecord{" + "key=" + key + ", value=" + value + ", topic=" + topic + ", headers=" + headers + ", partition=" + partition + ", timestamp=" + timestamp + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.key);
+        hash = 89 * hash + Objects.hashCode(this.value);
+        hash = 89 * hash + Objects.hashCode(this.topic);
+        hash = 89 * hash + Objects.hashCode(this.headers);
+        hash = 89 * hash + Objects.hashCode(this.partition);
+        hash = 89 * hash + Objects.hashCode(this.timestamp);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MediumConsumerRecord other = (MediumConsumerRecord) obj;
+        if (!Objects.equals(this.key, other.key)) {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        if (!Objects.equals(this.topic, other.topic)) {
+            return false;
+        }
+        if (!Objects.equals(this.headers, other.headers)) {
+            return false;
+        }
+        if (!Objects.equals(this.partition, other.partition)) {
+            return false;
+        }
+        if (!Objects.equals(this.timestamp, other.timestamp)) {
+            return false;
+        }
+        return true;
+    }
+    
     
     
     

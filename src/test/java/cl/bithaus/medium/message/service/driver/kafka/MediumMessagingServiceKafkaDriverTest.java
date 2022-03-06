@@ -21,8 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -99,17 +101,25 @@ public class MediumMessagingServiceKafkaDriverTest {
         MediumProducerRecord record = 
                     new MediumProducerRecord("key", "value " + new Date(), topicToUse, headers, expected.getTimestamp());
         
+        logger.info("consuming all messages");
+        
+        while(true) {
+            
+            MediumConsumerRecord r = list.poll(1, TimeUnit.SECONDS);
+            
+            if(r == null)
+                break;
+        }
+        
         
         logger.info("Sending record");
         instance.send(record);
         logger.info("Record Sent");
         
         MediumConsumerRecord received = list.take();
-        logger.info("Record received: " + gson.toJson(received));
+        logger.info("Record received: " + gson.toJson(received));        
         
-        
-        
-//        Assertions.assertEquals(expected, list.get(0));
+        Assertions.assertEquals(expected, received);
         
     }
     

@@ -68,7 +68,9 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
     private Producer<String, String> producer;
     private Consumer<String, String> consumer;
     
-    private Semaphore s = new Semaphore(0);
+    private Semaphore startLock = new Semaphore(0);
+    
+    private boolean ready = false;
 
     
     public MediumMessagingServiceKafkaDriver() { }
@@ -213,36 +215,58 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
     @Override
     public void start() throws MediumMessagingServiceException {
         
+        
+        boolean shouldBeReady = true;
+
         if(consumer != null) {
             
-            String[] topics = config.getConsumerSubscriptionTopics();
-                        
-            if(topics != null && topics.length > 0) {
+            try {
 
-                if(config.isTestingModeEnabled()) {
-                    
-                    logger.info("TEST Subscribing to " + Arrays.toString(topics) + " with partition 0");
-                    Collection<TopicPartition> partitions = new LinkedList<>();
-                    
-                    Arrays.stream(topics).forEach((t) -> {
-                    
-                        partitions.add(new TopicPartition(t, 0));
-                    });
-                    
-                    consumer.assign(partitions);
-                }
-                else {
-                    
-                    logger.info("Subscribing to " + topics.length + " topics: " + Arrays.toString(topics));
-                    consumer.subscribe(Arrays.asList(topics), getConsumerRebalanceListener());
-                }
-            }                       
+                shouldBeReady = false;
+
+                String[] topics = config.getConsumerSubscriptionTopics();
+
+                if(topics != null && topics.length > 0) {
+
+                    if(config.isTestingModeEnabled()) {
+
+                        logger.info("TEST Subscribing to " + Arrays.toString(topics) + " with partition 0");
+                        Collection<TopicPartition> partitions = new LinkedList<>();
+
+                        Arrays.stream(topics).forEach((t) -> {
+
+                            partitions.add(new TopicPartition(t, 0));
+                        });
+
+                        consumer.assign(partitions);
+                    }
+                    else {
+
+                        logger.info("Subscribing to " + topics.length + " topics: " + Arrays.toString(topics));
+                        consumer.subscribe(Arrays.asList(topics), getConsumerRebalanceListener());
+                        this.executor.execute(getConsumerPoller());
+                        logger.info("Waiting for partition asignment...");
+                        this.startLock.acquire();
+                        setReady(true);
+                    }
+                }                       
+
+            }
+            catch(Exception e) {
+
+                throw new MediumMessagingServiceException("Error starting consumer", e);
+            }
 
         }
+        else {
+            
+            // if the consumer is null, then only the producer is enabled.             
+            setReady(true);
+        }
         
-        this.executor.execute(getConsumerPoller());
-        
-        logger.info("Start OK");
+
+        logger.info("Start complete");
+
     }
 
     @Override
@@ -266,6 +290,12 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
         logger.info("Subscribing to " + topics.length + " topics: " + Arrays.toString(topics));
         this.consumer.subscribe(Arrays.asList(topics));
                         
+    }
+    
+    private void setReady(boolean value) {
+        
+        this.ready = value;
+        logger.info("READY = " + value);
     }
 
     public Producer<String, String> getProducer() {
@@ -342,6 +372,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
             public void onPartitionsAssigned(Collection<TopicPartition> arg0) {
                 
                 logger.info("PARTITIONS ASSIGNED: " + arg0);
+                startLock.release();
             }
         };
     }
