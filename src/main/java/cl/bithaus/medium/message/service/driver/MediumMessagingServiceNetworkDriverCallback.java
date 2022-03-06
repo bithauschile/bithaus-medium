@@ -13,7 +13,6 @@ package cl.bithaus.medium.message.service.driver;
 
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
-import cl.bithaus.medium.message.exception.SendToDeadLetterException;
 
 /**
  * Simple callback invoked by the network driver upon message arrival
@@ -25,7 +24,6 @@ public interface MediumMessagingServiceNetworkDriverCallback {
      * Message delivery from the underlying Kafka
      * @param record Message that arrived from the underlying Kafka
      * @throws cl.bithaus.medium.message.exception.MediumMessagingServiceException
-     * @throws cl.bithaus.medium.message.exception.SendToDeadLetterException
      */
-    public void onMessage(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException;
+    public void onMessage(MediumConsumerRecord record) throws MediumMessagingServiceException;
 }

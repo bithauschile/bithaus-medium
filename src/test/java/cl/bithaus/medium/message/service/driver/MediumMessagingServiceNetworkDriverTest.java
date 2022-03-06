@@ -71,12 +71,8 @@ public class MediumMessagingServiceNetworkDriverTest {
         final List<MediumConsumerRecord> messageQueue = 
                 new LinkedList<>();
         
-        MediumMessagingServiceNetworkDriverCallback callback = new MediumMessagingServiceNetworkDriverCallback() {
-            @Override
-            public void onMessage(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
-                
-                messageQueue.add(record);
-            }
+        MediumMessagingServiceNetworkDriverCallback callback = (var record) -> {
+            messageQueue.add(record);
         };
                                 
                 
@@ -133,48 +129,6 @@ public class MediumMessagingServiceNetworkDriverTest {
         
         
     }
-
-    @Test
-    public void testDeadLetter() throws Exception {
-        logger.info("testDeadLetter");
-        
-        Map driverProperties = new HashMap();
-        
-        final List<MediumMessage> messageQueue = 
-                new LinkedList<>();
-        
-        MediumMessagingServiceNetworkDriverCallback callback = new MediumMessagingServiceNetworkDriverCallback() {
-            @Override
-            public void onMessage(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
-                
-                try {
-                   
-                    MediumMessage m = MediumMessagingServiceUtils.toMedium(MediumMessage.class, record);
-                    messageQueue.add(m);
-                }
-                catch(Exception e) {
-                    
-                    logger.error("Cannot deserialize message, sending to dead letter");
-                    throw new SendToDeadLetterException("Cannot deserialize", e);
-                }
-                
-            }
-        };
-                                
-                
-        TestNetworkDriver driver = new TestNetworkDriver();
-        driver.init(driverProperties, callback);
-        driver.start();
-        
-        try {
-            driver.simulateIncommingRaw("key", "value", "topic");
-            Assertions.fail("Message deserialization should fail");
-        }
-        catch(SendToDeadLetterException e) {}
-        
-        
-        
-        
-    }
+ 
     
 }

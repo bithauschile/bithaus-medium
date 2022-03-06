@@ -19,6 +19,7 @@ import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDri
 import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceUtils;
 import com.google.gson.Gson;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -198,6 +199,11 @@ public class TestNetworkDriver implements MediumMessagingServiceNetworkDriver {
     @Override
     public boolean isReady() {
         return this.ready.get();
+    }
+
+    @Override
+    public void subscribe(String[] topics) {
+        this.topics.addAll(Arrays.asList(topics));
     }
     
 }

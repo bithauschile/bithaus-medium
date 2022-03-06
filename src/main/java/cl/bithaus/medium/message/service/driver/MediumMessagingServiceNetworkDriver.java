@@ -28,11 +28,27 @@ public interface MediumMessagingServiceNetworkDriver {
      * @throws MediumMessagingServiceException 
      */
     public void send(MediumProducerRecord record) throws MediumMessagingServiceException;
+    
+    /**
+     * Subscribe the underlying consume to read messages from a limited group 
+     * of topics.
+     * @param topics 
+     * @throws cl.bithaus.medium.message.exception.MediumMessagingServiceException 
+     */
+    public void subscribe(String[] topics) throws MediumMessagingServiceException;
         
+    /**
+     * Topics configured on this driver
+     * @return 
+     */
     public String[] getAvailableTopic();
     
+    /**
+     * Is the driver ready for work
+     * @return 
+     */
     public boolean isReady();
-    
+        
     public void start() throws MediumMessagingServiceException;
     
     public void stop() throws MediumMessagingServiceException;

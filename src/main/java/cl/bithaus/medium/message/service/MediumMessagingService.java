@@ -17,6 +17,8 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +44,7 @@ public class MediumMessagingService {
     private MediumMessagingServiceRawHandler rawHandler;
     private boolean running = false;
     private String defaultProducerTopic;
+    private Consumer<MediumConsumerRecord> sendToDeadletterCallback;
     
     
     public MediumMessagingService(MediumMessagingServiceConfig config) throws MediumMessagingServiceException {
@@ -87,12 +90,13 @@ public class MediumMessagingService {
             
             this.driver = (MediumMessagingServiceNetworkDriver) Class.forName(this.serviceConfig.getDriverClassName()).getConstructor().newInstance();
             
-            driver.init(driverConfigMap, new MediumMessagingServiceNetworkDriverCallback() {
-
-                @Override
-                public void onMessage(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
-                
+            driver.init(driverConfigMap, (var record) -> {
+                try {
                     rawHandler.onData(record);
+                }
+                catch(SendToDeadLetterException e) {
+                    
+                    sendToDeadLetter(record);
                 }
             });
             
@@ -120,6 +124,19 @@ public class MediumMessagingService {
             throw new MediumMessagingServiceException("Error intializing driver", t);
         }
             
+    }
+    
+    private void sendToDeadLetter(MediumConsumerRecord record) {
+        
+        if(sendToDeadletterCallback != null) {
+
+            logger.warn("Sending record to dead letter from topic " + record.toString() + " VALUE: " + record.getValue());
+            sendToDeadletterCallback.accept(record);
+        }
+        else {
+
+            logger.warn("No deadletter callback, discarting record: " + gson.toJson(record));
+        }        
     }
     
     public void start() throws MediumMessagingServiceException {
