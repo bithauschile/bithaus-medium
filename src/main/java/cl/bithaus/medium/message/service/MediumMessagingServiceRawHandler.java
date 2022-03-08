@@ -35,7 +35,7 @@ public interface MediumMessagingServiceRawHandler {
      * @param messageType message class
      * @param handler message listener to be called
      */
-    public <M extends MediumMessage> void addMessageHandler(Class<M> messageType, MediumMessageListener<? super M> handler);
+    public <M extends MediumMessage> void addMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler);
     
     /**
      * Removes a registered message listener
@@ -44,6 +44,6 @@ public interface MediumMessagingServiceRawHandler {
      * @param handler message listener to be removed
      * @return true if the message listener was present
      */
-    public <M extends MediumMessage> boolean removeMessageHandler(Class<M> messageType, MediumMessageListener<? super M> handler);
+    public <M extends MediumMessage> boolean removeMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler);
     
 }

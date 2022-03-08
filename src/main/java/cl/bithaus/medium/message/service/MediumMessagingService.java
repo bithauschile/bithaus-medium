@@ -10,14 +10,12 @@ import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
 import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.utils.MapUtils;
 import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -261,14 +259,14 @@ public class MediumMessagingService {
 //        
 //    }
     
-    public <M extends MediumMessage> void addMessageHandler(Class<M> messageType, MediumMessageListener<? super M> handler) {
+    public <M extends MediumMessage> void addMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler) {
     
-        this.rawHandler.addMessageHandler(messageType, handler);
+        this.rawHandler.addMessageListener(messageType, handler);
     }
      
-    public <M extends MediumMessage> boolean removeMessageHandler(Class<M> messageType, MediumMessageListener<? super M> handler) {
+    public <M extends MediumMessage> boolean removeMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler) {
         
-        return this.rawHandler.removeMessageHandler(messageType, handler);
+        return this.rawHandler.removeMessageListener(messageType, handler);
     }
     
     public void setRawHandler(MediumMessagingServiceRawHandler rawHandler) {
@@ -296,5 +294,15 @@ public class MediumMessagingService {
         logger.info("Replacing gson instance with " + gson);
         this.gson = gson;
     }
+
+    public Consumer<MediumConsumerRecord> getSendToDeadletterCallback() {
+        return sendToDeadletterCallback;
+    }
+
+    public void setSendToDeadletterCallback(Consumer<MediumConsumerRecord> sendToDeadletterCallback) {
+        this.sendToDeadletterCallback = sendToDeadletterCallback;
+    }
+    
+    
     
 }

@@ -67,7 +67,7 @@ public class MediumMessagingServiceDefaultRawHandlerTest {
         
         AtomicReference<TestMessage> dest = new AtomicReference<>();
         
-        instance.addMessageHandler(TestMessage.class, new MediumMessageListener<TestMessage>() {
+        instance.addMessageListener(TestMessage.class, new MediumMessageListener<TestMessage>() {
             @Override
             public String getName() {
                 return "test-message-listener";

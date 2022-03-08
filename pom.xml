@@ -23,6 +23,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.30</version>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.28</version>
+        </dependency>
         
         <dependency>
             <groupId>com.azure</groupId>
@@ -34,6 +39,12 @@
             <artifactId>azure-messaging-servicebus</artifactId>
             <version>7.6.0</version>
         </dependency>        
+
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>3.1.0</version>
+        </dependency>
 
         
         <!-- TEST -->
@@ -61,15 +72,6 @@
             <version>4.3.1</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>2.5.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>1.7.28</version>
-        </dependency>
+
     </dependencies>
 </project>

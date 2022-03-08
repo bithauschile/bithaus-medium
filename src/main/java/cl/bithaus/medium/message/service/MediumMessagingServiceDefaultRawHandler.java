@@ -29,12 +29,12 @@ import org.slf4j.LoggerFactory;
  */
 public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingServiceRawHandler {
     
-    private final Logger logger = LoggerFactory.getLogger(MediumMessagingServiceDefaultRawHandler.class);
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final ConcurrentHashMap<String, LinkedList<HandlerEntry>> handlers = 
+    protected final ConcurrentHashMap<String, LinkedList<HandlerEntry>> handlers = 
             new ConcurrentHashMap<>();
     
-    private Gson gson = new Gson();
+    protected Gson gson = new Gson();
     
     public MediumMessagingServiceDefaultRawHandler() {
         
@@ -86,19 +86,19 @@ public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingS
             try {
                 
                 if(logger.isTraceEnabled())
-                    logger.trace("Dispatching message " + message.getUuid() + " to " + entry.handler.getName());
+                    logger.trace("Dispatching message " + message.getUuid() + " to " + entry.listener.getName());
                 
-                entry.handler.onMessage(message);
+                entry.listener.onMessage(message);
             }
             catch(Exception e) {
-                logger.error("Error dispatching message " + message.getUuid() + " to " + entry.handler.getName(), e);
+                logger.error("Error dispatching message " + message.getUuid() + " to " + entry.listener.getName(), e);
             }
 
         }            
     }
     
     @Override
-    public <M extends MediumMessage> void addMessageHandler(Class<M> messageType, MediumMessageListener<? super M> handler) {
+    public <M extends MediumMessage> void addMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler) {
     
         if(messageType == null)
             throw new IllegalArgumentException("Message type cannot by null");
@@ -122,7 +122,7 @@ public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingS
     }
      
     @Override
-    public <M extends MediumMessage> boolean removeMessageHandler(Class<M> messageType, MediumMessageListener<? super M> handler) {
+    public <M extends MediumMessage> boolean removeMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler) {
         
         if(handler == null)
             throw new IllegalArgumentException("Handler cannot by null");
@@ -136,7 +136,7 @@ public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingS
         
         for(HandlerEntry e : handlerList) {
                         
-            if(e.handler == handler) {
+            if(e.listener == handler) {
                 handlerList.remove(e);
                 return true;
             }
@@ -150,23 +150,23 @@ public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingS
     
 
     
-    private class HandlerEntry<M extends MediumMessage> {
+    protected static class HandlerEntry<M extends MediumMessage> {
         
-        private MediumMessageListener<? super M> handler;
+        private MediumMessageListener<? super M> listener;
         private Class<M> messageClass;
         
         public HandlerEntry(Class<M> messageType, MediumMessageListener<? super M> handler) {
             
-            this.handler = handler;
+            this.listener = handler;
             this.messageClass = messageType;
         }
 
-        public MediumMessageListener<? super M> getHandler() {
-            return handler;
+        public MediumMessageListener<? super M> getListener() {
+            return listener;
         }
 
         public void setHandler(MediumMessageListener<? super M> handler) {
-            this.handler = handler;
+            this.listener = handler;
         }
 
         public Class<M> getMessageClass() {

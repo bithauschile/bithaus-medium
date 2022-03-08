@@ -6,6 +6,8 @@
 package cl.bithaus.medium.message.converters;
 
 import cl.bithaus.medium.message.MediumMessage;
+import cl.bithaus.medium.record.MediumConsumerRecord;
+import java.util.Collection;
 
 /**
  *
@@ -14,6 +16,6 @@ import cl.bithaus.medium.message.MediumMessage;
  */
 public abstract class MessageTranslator <O extends MediumMessage> {
     
-    public abstract O[] toMedium(String rawdata) throws MessageTranslatorException;
+    public abstract Collection<O> toMedium(MediumConsumerRecord record) throws MessageTranslatorException;
     
 }
