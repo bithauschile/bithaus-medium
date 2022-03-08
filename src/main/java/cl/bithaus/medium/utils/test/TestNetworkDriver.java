@@ -160,7 +160,7 @@ public class TestNetworkDriver implements MediumMessagingServiceNetworkDriver {
         
         while(true) {
             
-            MediumProducerRecord pr = this.waitForRecord();
+            MediumProducerRecord pr = this.waitForRecord(timeout, timeUnit);
             
             String recordClassName = pr.getHeaders().get(MediumMessage.HEADER_MESSAGE_CLASS);
             Class recordClass = Class.forName(recordClassName);

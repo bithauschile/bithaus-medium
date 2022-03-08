@@ -26,10 +26,7 @@ import org.slf4j.LoggerFactory;
  * @author jmakuc
  */
 public class MediumMessagingService {
-               
-    
-    private static final int VERSION = 1;
-    
+                      
     private final Logger logger;
     
     private Gson gson;

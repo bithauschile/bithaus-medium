@@ -22,7 +22,7 @@ public class MediumMessagingServiceKafkaDriverConfig extends AbstractConfig {
     
     public static final String PRODUCER_ENABLED_CONFIG = "kafka.producer.enabled";
     public static final String PRODUCER_ENABLED_DOC = "Enables the drivers Kafka producer";
-    public static final String PRODUCER_BOOTSTRAP_SERVERS_CONFIG = "kafka.producer.bootstrapServer";
+    public static final String PRODUCER_BOOTSTRAP_SERVERS_CONFIG = "kafka.producer.bootstrapServers";
     public static final String PRODUCER_BOOTSTRAP_SERVERS_DOC = "Bootstrap server list used by the Kafka Producer (comma separated)";
     public static final String PRODUCER_CLIENTID_CONFIG = "kafka.producer.clientId";
     public static final String PRODUCER_CLIENTID_DOC = "KAfka producer client ID.";
@@ -31,7 +31,7 @@ public class MediumMessagingServiceKafkaDriverConfig extends AbstractConfig {
     
     public static final String CONSUMER_ENABLED_CONFIG = "kafka.consumer.enabled";
     public static final String CONSUMER_ENABLED_DOC = "Enables the drivers Kafka consumer";
-    public static final String CONSUMER_BOOTSTRAP_SERVERS_CONFIG = "kafka.consumer.bootstrapServer";
+    public static final String CONSUMER_BOOTSTRAP_SERVERS_CONFIG = "kafka.consumer.bootstrapServers";
     public static final String CONSUMER_BOOTSTRAP_SERVERS_DOC = "Bootstrap server list used by the Kafka consumer (comma separated)";
     public static final String CONSUMER_GROUPID_CONFIG = "kafka.consumer.groupId";
     public static final String CONSUMER_GROUPID_DOC = "Group ID that this consumer belongs to.";

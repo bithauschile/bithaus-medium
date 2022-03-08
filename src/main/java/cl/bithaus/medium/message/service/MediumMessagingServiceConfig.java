@@ -29,9 +29,11 @@ public class MediumMessagingServiceConfig extends AbstractConfig {
     public static final String LOGGER_SUFIX_CONFIG = "medium.message.service.loggerSuffix";
     public static final String LOGGER_SUFIX_DOC = "Medium messaging service logger suffix";
 
-    public static final String DEFAULT_PRODUCER_TOPIC_CONFIG = "mmedium.message.service.defaultProducerTopic";
+    public static final String DEFAULT_PRODUCER_TOPIC_CONFIG = "medium.message.service.defaultProducerTopic";
     public static final String DEFAULT_PRODUCER_TOPIC_DOC = "Medium messaging service default producer topic";
-
+    
+    private Map driverConfigMap = null;
+    
     public MediumMessagingServiceConfig(Map originals) {
         super(conf(), originals);
     }
@@ -39,7 +41,7 @@ public class MediumMessagingServiceConfig extends AbstractConfig {
     public static ConfigDef conf() {
 
         return new ConfigDef()
-                .define(DRIVER_CLASSNAME_CONFIG, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, DRIVER_CLASSNAME_DOC)
+                .define(DRIVER_CLASSNAME_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.HIGH, DRIVER_CLASSNAME_DOC)
                 .define(DRIVER_CONFIGFILE_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.LOW, DRIVER_CONFIGFILE_DOC)
                 .define(LOGGER_SUFIX_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.LOW, LOGGER_SUFIX_DOC)
                 .define(DEFAULT_PRODUCER_TOPIC_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.LOW, DEFAULT_PRODUCER_TOPIC_DOC)                
@@ -65,4 +67,13 @@ public class MediumMessagingServiceConfig extends AbstractConfig {
         
         return this.getString(DEFAULT_PRODUCER_TOPIC_CONFIG);
     } 
+
+    public Map getDriverConfigMap() {
+        return driverConfigMap;
+    }
+
+    public void setDriverConfigMap(Map driverConfigMap) {
+        this.driverConfigMap = driverConfigMap;
+    }
+        
 }

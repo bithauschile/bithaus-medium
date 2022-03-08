@@ -13,6 +13,7 @@ package cl.bithaus.medium.message.service.driver.azure;
 import java.util.Map;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.config.types.Password;
 
 /**
  * Kakfa Driver configuration file
@@ -54,9 +55,9 @@ public class MediumMessagingServiceAzureServiceBusDriverConfig extends AbstractC
         
         ConfigDef config =  new ConfigDef()
                                 
-                .define(CONNECTIONSTRING_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.LOW, CONNECTIONSTRING_DOC)
+                .define(CONNECTIONSTRING_CONFIG, ConfigDef.Type.PASSWORD, null, ConfigDef.Importance.LOW, CONNECTIONSTRING_DOC)
                 .define(CREDENTIAL_KEY_NAME_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.LOW, CREDENTIAL_KEY_NAME_DOC)
-                .define(CREDENTIAL_KEY_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.LOW, CREDENTIAL_KEY_DOC)                
+                .define(CREDENTIAL_KEY_CONFIG, ConfigDef.Type.PASSWORD, null, ConfigDef.Importance.LOW, CREDENTIAL_KEY_DOC)                
                 
                 .define(SENDER_ENABLED_CONFIG, ConfigDef.Type.BOOLEAN, false, ConfigDef.Importance.MEDIUM, SENDER_ENABLED_DOC)
                 .define(SENDER_TOPIC_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.LOW, SENDER_TOPIC_DOC)
@@ -73,7 +74,7 @@ public class MediumMessagingServiceAzureServiceBusDriverConfig extends AbstractC
 
     
     public String getConnectionString() {
-        return this.getString(CONNECTIONSTRING_CONFIG);
+        return this.getPassword(CONNECTIONSTRING_CONFIG).value();
     }
     
     public String getCredentialKeyName() {
@@ -81,7 +82,7 @@ public class MediumMessagingServiceAzureServiceBusDriverConfig extends AbstractC
     }
     
     public String getCredentialKey() {
-        return this.getString(CREDENTIAL_KEY_CONFIG);
+        return this.getPassword(CREDENTIAL_KEY_CONFIG).value();
     }
 
     public Boolean isSenderEnabled() {        

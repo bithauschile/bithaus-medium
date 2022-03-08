@@ -10,9 +10,7 @@
  */
 package cl.bithaus.medium.message.service.driver.azure;
 
-import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
-import cl.bithaus.medium.message.service.MediumMessagingService;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
 import cl.bithaus.medium.record.MediumConsumerRecord;
@@ -24,6 +22,7 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import io.netty.util.internal.StringUtil;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -89,18 +88,19 @@ public class MediumMessagingServiceAzureServiceBusDriver implements MediumMessag
             builder.credential(k);
             
             
-            if(config.getSenderQueue() != null && config.getSenderTopic() != null)
+            
+            if(!StringUtil.isNullOrEmpty(config.getSenderQueue()) && !StringUtil.isNullOrEmpty(config.getSenderTopic()))
                 throw new MediumMessagingServiceException("Topic and queue configuration cannot be setted together, choose wisely");
             
             ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderBuilder = builder.sender();
             
-            if(config.getSenderQueue() != null) {
+            if(!StringUtil.isNullOrEmpty(config.getSenderQueue())) {
                 senderBuilder.queueName(config.getSenderQueue());
                 logger.info("Sender queue name: " + config.getSenderQueue());
                 this.senderPublishToName = config.getSenderQueue();
             }
-            else if(config.getSenderTopic() != null) {
-                senderBuilder.queueName(config.getSenderTopic());
+            else if(StringUtil.isNullOrEmpty(config.getSenderTopic())) {
+                senderBuilder.topicName(config.getSenderTopic());
                 logger.info("Sender topic name: " + config.getSenderTopic());
                 this.senderPublishToName = config.getSenderTopic();
             }
@@ -145,23 +145,24 @@ public class MediumMessagingServiceAzureServiceBusDriver implements MediumMessag
             
             
             
-            if(config.getProcessorQueue()!= null && config.getProcessorTopic()!= null)
+            if(!StringUtil.isNullOrEmpty(config.getSenderQueue()) && !StringUtil.isNullOrEmpty(config.getSenderTopic()))
                 throw new MediumMessagingServiceException("Topic and queue configuration cannot be setted together, choose wisely");
             
             ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorBuilder = builder.processor();
             
-            if(config.getProcessorQueue() != null) {
-                processorBuilder.queueName(config.getProcessorQueue());
-                logger.info("Processor queue name: " + config.getProcessorQueue());
-                this.processorReadFromName = config.getProcessorQueue();
+                        if(!StringUtil.isNullOrEmpty(config.getSenderQueue())) {
+                processorBuilder.queueName(config.getSenderQueue());
+                logger.info("Sender queue name: " + config.getSenderQueue());
+                this.senderPublishToName = config.getSenderQueue();
             }
-            else if(config.getProcessorTopic()!= null) {
-                processorBuilder.queueName(config.getProcessorTopic());
-                logger.info("Processor topic name: " + config.getProcessorTopic());
-                this.processorReadFromName = config.getProcessorTopic();
+            else if(StringUtil.isNullOrEmpty(config.getSenderTopic())) {
+                processorBuilder.topicName(config.getSenderTopic());
+                logger.info("Sender topic name: " + config.getSenderTopic());
+                this.senderPublishToName = config.getSenderTopic();
             }
             else
-                throw new MediumMessagingServiceException("A queue or topic name is required for processor (only one)");
+                throw new MediumMessagingServiceException("A queue or topic name is required for the sender (only one)");
+            
             
             processorBuilder.processMessage((t) -> {
                 
@@ -292,8 +293,8 @@ public class MediumMessagingServiceAzureServiceBusDriver implements MediumMessag
         
         String key = message.getPartitionKey();
         String topic = message.getApplicationProperties().get("topic") + "";
-        Long timestamp = Long.parseLong(message.getApplicationProperties().get("timestamp") + "");
-        
+        Object timestampStr = message.getApplicationProperties().get("timestamp");
+        Long timestamp = timestampStr!=null?Long.parseLong(timestampStr.toString()):null;
         
         
         return new MediumConsumerRecord(key, message.getBody().toString(), topic, headers, timestamp);

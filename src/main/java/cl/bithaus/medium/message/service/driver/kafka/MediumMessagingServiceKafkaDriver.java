@@ -415,7 +415,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
         
         headers.forEach((k,v) -> {
         
-            Header h = new RecordHeader(k, v.getBytes());
+            Header h = new RecordHeader(k, v!=null?v.getBytes():null);
             i.add(h);
         });
         
