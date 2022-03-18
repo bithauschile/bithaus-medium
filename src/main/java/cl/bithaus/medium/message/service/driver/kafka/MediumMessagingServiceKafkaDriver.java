@@ -406,7 +406,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
             headers.put(h.key(), new String(h.value()));
         });        
         
-        return new MediumConsumerRecord(kr.key(), kr.value(), kr.topic(), headers, kr.timestamp(), kr.partition());
+        return new MediumConsumerRecord(kr.key(), kr.value(), kr.topic(), headers, kr.timestamp(), kr.partition(), kr.offset());
     }
     
     public static Iterable<Header> getIterableHeaders(Map<String,String> headers) {

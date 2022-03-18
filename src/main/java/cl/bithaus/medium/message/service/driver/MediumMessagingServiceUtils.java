@@ -55,6 +55,7 @@ public class MediumMessagingServiceUtils {
         metadata.setSource(headers.get(MediumMessage.HEADER_MESSAGE_SOURCE));
         metadata.setTarget(headers.get(MediumMessage.HEADER_MESSAGE_TARGET));
         metadata.setTimestamp(record.getTimestamp());
+        metadata.setTopicOffset(record.getOffset());
         
         M message = gson.fromJson(record.getValue(), messageClass);        
         message.setMetadata(metadata);
@@ -62,5 +63,6 @@ public class MediumMessagingServiceUtils {
         return message;
                 
     }
+    
     
 }

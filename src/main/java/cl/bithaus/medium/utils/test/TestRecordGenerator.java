@@ -17,6 +17,7 @@ import cl.bithaus.medium.record.MediumProducerRecord;
 import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.kafka.streams.test.TestRecord;
 
 /**
  *
@@ -77,6 +78,21 @@ public class TestRecordGenerator {
 
         return new MediumProducerRecord(key, value, topic, headers, timestamp);
 
+    }
+    
+    public static TestRecord getStreamsTestRecord(MediumMessage message) {
+        
+        MediumMessage.Metadata md = message.getMetadata();
+        
+        TestRecord<String,String> record = new TestRecord<>(md.getKey(), gson.toJson(message)); 
+        
+        
+        md.getHeaders().forEach((k, v) -> {
+            
+            record.headers().add(k, v.getBytes());
+        });
+        
+        return record;        
     }
     
     

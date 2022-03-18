@@ -71,6 +71,7 @@ public abstract class MediumMessage {
         private String target;
         private String rxTopic;
         private String txTopic;
+        private Long topicOffset;
 
         public String getKey() {
             return key;
@@ -147,16 +148,25 @@ public abstract class MediumMessage {
             this.txTopic = txTopic;
         }
 
+        public Long getTopicOffset() {
+            return topicOffset;
+        }
+
+        public void setTopicOffset(Long topicOffset) {
+            this.topicOffset = topicOffset;
+        }
+
         @Override
         public int hashCode() {
-            int hash = 5;
-            hash = 67 * hash + Objects.hashCode(this.key);
-            hash = 67 * hash + Objects.hashCode(this.headers);
-            hash = 67 * hash + Objects.hashCode(this.timestamp);
-            hash = 67 * hash + Objects.hashCode(this.source);
-            hash = 67 * hash + Objects.hashCode(this.target);
-            hash = 67 * hash + Objects.hashCode(this.rxTopic);
-            hash = 67 * hash + Objects.hashCode(this.txTopic);
+            int hash = 7;
+            hash = 83 * hash + Objects.hashCode(this.key);
+            hash = 83 * hash + Objects.hashCode(this.headers);
+            hash = 83 * hash + Objects.hashCode(this.timestamp);
+            hash = 83 * hash + Objects.hashCode(this.source);
+            hash = 83 * hash + Objects.hashCode(this.target);
+            hash = 83 * hash + Objects.hashCode(this.rxTopic);
+            hash = 83 * hash + Objects.hashCode(this.txTopic);
+            hash = 83 * hash + Objects.hashCode(this.topicOffset);
             return hash;
         }
 
@@ -193,10 +203,11 @@ public abstract class MediumMessage {
             if (!Objects.equals(this.timestamp, other.timestamp)) {
                 return false;
             }
+            if (!Objects.equals(this.topicOffset, other.topicOffset)) {
+                return false;
+            }
             return true;
         }
-        
-        
         
         
                         

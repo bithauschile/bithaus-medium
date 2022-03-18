@@ -17,10 +17,8 @@ import cl.bithaus.medium.utils.test.TestRecordGenerator;
 import com.google.gson.Gson;
 import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,21 +34,17 @@ public class MediumMessagingServiceDefaultRawHandlerTest {
     
     public MediumMessagingServiceDefaultRawHandlerTest() {
     }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
+     
     
     @BeforeEach
-    public void setUp() {
+    void setUp() {
+        
+        logger.info("setup");
     }
     
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
+        logger.info("tearDown");
     }
 
     /**

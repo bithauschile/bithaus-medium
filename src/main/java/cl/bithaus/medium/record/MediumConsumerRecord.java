@@ -28,6 +28,7 @@ public class MediumConsumerRecord {
     private final Map<String, String> headers;
     private final Integer partition;
     private final Long timestamp;    
+    private final Long offset;
 
     /**
      * Constructor
@@ -43,6 +44,7 @@ public class MediumConsumerRecord {
         this.partition = null;
         this.headers = new HashMap<>();
         this.timestamp = null;
+        this.offset = null;
     }
     
     
@@ -61,6 +63,7 @@ public class MediumConsumerRecord {
         this.partition = null;
         this.headers = headers;
         this.timestamp = null;
+        this.offset = null;
     }
     
     
@@ -81,6 +84,7 @@ public class MediumConsumerRecord {
         this.headers = headers;
         this.timestamp = timestamp;
         this.partition = null;
+        this.offset = null;
     }    
     
     /**
@@ -101,6 +105,29 @@ public class MediumConsumerRecord {
         this.headers = headers;
         this.timestamp = timestamp;
         this.partition = partition;
+        this.offset = null;
+    }        
+    
+    /**
+     * Constructor
+     * @param key key to be used for balancing the message across partitions
+     * @param value payload
+     * @param topic topic where the message came from
+     * @param headers Headers of the message     
+     * @param timestamp generation timestmap of the information inside the message. 
+     *                  If provided, implies {@link TimestampType.CREATE_TIME}. If not, underlying Kafka will assign timestamp.
+     * @param partition Forced partition to be used
+     * @param offset topic offset where this message was
+     */
+    public MediumConsumerRecord(String key, String value, String topic, Map<String,String> headers, Long timestamp, Integer partition, Long offset) {
+        
+        this.key = key;
+        this.value = value;
+        this.topic = topic;
+        this.headers = headers;
+        this.timestamp = timestamp;
+        this.partition = partition;
+        this.offset = offset;
     }        
      
     
@@ -152,20 +179,20 @@ public class MediumConsumerRecord {
         return timestamp;
     }
 
-    @Override
-    public String toString() {
-        return "MediumMessagingServiceConsumerRecord{" + "key=" + key + ", value=" + value + ", topic=" + topic + ", headers=" + headers + ", partition=" + partition + ", timestamp=" + timestamp + '}';
+    public Long getOffset() {
+        return offset;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 89 * hash + Objects.hashCode(this.key);
-        hash = 89 * hash + Objects.hashCode(this.value);
-        hash = 89 * hash + Objects.hashCode(this.topic);
-        hash = 89 * hash + Objects.hashCode(this.headers);
-        hash = 89 * hash + Objects.hashCode(this.partition);
-        hash = 89 * hash + Objects.hashCode(this.timestamp);
+        hash = 17 * hash + Objects.hashCode(this.key);
+        hash = 17 * hash + Objects.hashCode(this.value);
+        hash = 17 * hash + Objects.hashCode(this.topic);
+        hash = 17 * hash + Objects.hashCode(this.headers);
+        hash = 17 * hash + Objects.hashCode(this.partition);
+        hash = 17 * hash + Objects.hashCode(this.timestamp);
+        hash = 17 * hash + Objects.hashCode(this.offset);
         return hash;
     }
 
@@ -199,10 +226,16 @@ public class MediumConsumerRecord {
         if (!Objects.equals(this.timestamp, other.timestamp)) {
             return false;
         }
+        if (!Objects.equals(this.offset, other.offset)) {
+            return false;
+        }
         return true;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "MediumConsumerRecord{" + "key=" + key + ", value=" + value + ", topic=" + topic + ", headers=" + headers + ", partition=" + partition + ", timestamp=" + timestamp + ", offset=" + offset + '}';
+    }
     
     
     

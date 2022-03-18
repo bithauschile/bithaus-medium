@@ -82,6 +82,8 @@ public class MediumMessagingService {
             Map driverConfigMap = null;            
             if(this.serviceConfig.getDriverConfigFile() != null && this.serviceConfig.getDriverConfigFile().length() > 0)
                 driverConfigMap = MapUtils.loadPropertiesFile(this.serviceConfig.getDriverConfigFile());
+            else if(this.serviceConfig.getDriverConfigMap() != null)
+                driverConfigMap = this.serviceConfig.getDriverConfigMap();
             
             this.driver = (MediumMessagingServiceNetworkDriver) Class.forName(this.serviceConfig.getDriverClassName()).getConstructor().newInstance();
             
