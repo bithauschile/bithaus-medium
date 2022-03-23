@@ -10,11 +10,13 @@
  */
 package cl.bithaus.medium.message.service.driver.kafka;
 
+import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.record.MediumProducerRecord;
+import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
@@ -186,7 +188,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
 
         try {
             
-            ProducerRecord<String,String> pr = fromMediumProducerRecord(record);
+            ProducerRecord<String,String> pr = MediumKafkaUtils.fromMediumProducerRecord(record);
             
             if(logger.isTraceEnabled())
                 logger.trace("OUT > " + pr);
@@ -341,7 +343,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
 
                             ConsumerRecord record = i.next();
 
-                            MediumConsumerRecord mediumRecord = fromKafkaConsuemrRecord(record);
+                            MediumConsumerRecord mediumRecord = MediumKafkaUtils.fromKafkaConsumerRecord(record);
 
                             try {
 
@@ -388,39 +390,5 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
     }
     
     
-    
-    public static ProducerRecord<String,String> fromMediumProducerRecord(MediumProducerRecord src) {
-        
-        Iterable<Header> iterableHeaders = getIterableHeaders(src.getHeaders());
-        ProducerRecord<String,String> pr = new ProducerRecord(src.getTopic(), src.getPartition(), src.getTimestamp(), src.getKey(), src.getValue(), iterableHeaders);
-        
-        return pr;
-    }
-    
-    public static MediumConsumerRecord fromKafkaConsuemrRecord(ConsumerRecord<String,String> kr) {
-        
-        Map<String,String> headers = new HashMap<>();
-        
-        kr.headers().forEach((h) -> {
-        
-            headers.put(h.key(), new String(h.value()));
-        });        
-        
-        return new MediumConsumerRecord(kr.key(), kr.value(), kr.topic(), headers, kr.timestamp(), kr.partition(), kr.offset());
-    }
-    
-    public static Iterable<Header> getIterableHeaders(Map<String,String> headers) {
-        
-        final List<Header> i = new LinkedList<>();
-        
-        headers.forEach((k,v) -> {
-        
-            Header h = new RecordHeader(k, v!=null?v.getBytes():null);
-            i.add(h);
-        });
-        
-        return i;
-    }
- 
 
 }

@@ -11,6 +11,7 @@
 package cl.bithaus.medium.stream;
 
 import cl.bithaus.medium.message.MediumMessage;
+import cl.bithaus.medium.message.service.driver.kafka.MediumKafkaUtils;
 import cl.bithaus.medium.utils.MessageUtils;
 import cl.bithaus.medium.message.service.driver.kafka.MediumMessagingServiceKafkaDriver;
 import cl.bithaus.medium.record.MediumConsumerRecord;
@@ -100,7 +101,7 @@ public class MediumStreamRecordConverter {
     public static TestRecord<String,String> fromMediumTestRecord(MediumMessage message) {
         
         MediumProducerRecord mpr = MessageUtils.fromMedium(message);
-        return new TestRecord<>(MediumMessagingServiceKafkaDriver.fromMediumProducerRecord(mpr));        
+        return new TestRecord<>(MediumKafkaUtils.fromMediumProducerRecord(mpr));        
     }        
     
     public static Map<String,String> getHeadersMap(Headers headers) {
