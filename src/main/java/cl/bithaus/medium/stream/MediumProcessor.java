@@ -124,7 +124,19 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         if(logger.isTraceEnabled())
             logger.trace("Dispatching message " + message.getUuid() + " to message handler method"); 
         
-        Collection<O> output = onMessage(message);
+        Collection<O> output = null;
+        try {
+            
+            output = onMessage(message);
+        }
+        catch(MediumMessagingServiceException e) {
+            
+            throw e;
+        }
+        catch(Exception e) {
+            
+            throw new MediumMessagingServiceException("Error processing medium message", e);
+        }
         
         if(output != null) {
             output.forEach((m) -> {
@@ -160,7 +172,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     
     public abstract void init(Map<String,Object> configMap);
     
-    public abstract Collection<O> onMessage(I message);     
+    public abstract Collection<O> onMessage(I message) throws MediumMessagingServiceException;     
      
     
     public static class BadData {

@@ -12,7 +12,7 @@ package cl.bithaus.medium.message.service.driver.azure;
 
 import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceUtils;
+import cl.bithaus.medium.utils.MessageUtils;
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.utils.test.TestMessage;
 import cl.bithaus.medium.utils.test.TestRecordGenerator;
@@ -101,7 +101,7 @@ public class MediumMessagingServiceAzureServiceBusDriverTest {
         
         logger.info("Record " + record);
         
-        TestMessage received = MediumMessagingServiceUtils.toMedium(TestMessage.class, record);
+        TestMessage received = MessageUtils.toMedium(TestMessage.class, record);
         
         logger.info("MESSAGE  " + gson.toJson(message));
         logger.info("RECEIVED " + gson.toJson(received));

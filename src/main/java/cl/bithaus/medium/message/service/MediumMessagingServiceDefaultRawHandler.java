@@ -15,7 +15,7 @@ import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
 import cl.bithaus.medium.record.MediumConsumerRecord;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceUtils;
+import cl.bithaus.medium.utils.MessageUtils;
 import com.google.gson.Gson;
 import java.util.LinkedList;
 import java.util.Map;
@@ -75,7 +75,7 @@ public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingS
 
         Class<? extends MediumMessage> messageClass = handlersList.get(0).getMessageClass();
 
-        MediumMessage message = MediumMessagingServiceUtils.toMedium(messageClass, record);
+        MediumMessage message = MessageUtils.toMedium(messageClass, record);
         
 
         if(logger.isTraceEnabled())

@@ -10,6 +10,7 @@
  */
 package cl.bithaus.medium.message.service.driver;
 
+import cl.bithaus.medium.utils.MessageUtils;
 import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.record.MediumConsumerRecord;
@@ -96,7 +97,7 @@ public class MediumMessagingServiceNetworkDriverTest {
         tm1.getMetadata().setTxTopic("output");
         tm1.getMetadata().setTimestamp(10L);
         
-        MediumProducerRecord pr1 = MediumMessagingServiceUtils.fromMedium(tm1);        
+        MediumProducerRecord pr1 = MessageUtils.fromMedium(tm1);        
         driver.send(pr1);
         
         // reception
@@ -119,7 +120,7 @@ public class MediumMessagingServiceNetworkDriverTest {
         driver.simulateIncommingMessage(tm2);
         
         MediumConsumerRecord cr1 = messageQueue.get(0);
-        TestMessage tm3 = MediumMessagingServiceUtils.toMedium(TestMessage.class, cr1);
+        TestMessage tm3 = MessageUtils.toMedium(TestMessage.class, cr1);
         
         // topic correction again
         tm3.getMetadata().setTxTopic(tm3.getMetadata().getRxTopic());

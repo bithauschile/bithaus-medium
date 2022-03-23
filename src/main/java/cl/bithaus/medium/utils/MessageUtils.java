@@ -8,7 +8,7 @@
  * portions of it unless previously authorized by writing by Bithaus Software Chile.
  * In any event, this notice must always be included verbatim with this file.
  */
-package cl.bithaus.medium.message.service.driver;
+package cl.bithaus.medium.utils;
 
 import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.record.MediumConsumerRecord;
@@ -21,7 +21,7 @@ import java.util.Map;
  * Conversion utilities
  * @author jmakuc
  */
-public class MediumMessagingServiceUtils {
+public class MessageUtils {
         
     private static final Gson gson = new Gson();
     

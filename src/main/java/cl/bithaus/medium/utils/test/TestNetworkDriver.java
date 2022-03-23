@@ -17,7 +17,7 @@ import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
 import cl.bithaus.medium.record.MediumProducerRecord;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceUtils;
+import cl.bithaus.medium.utils.MessageUtils;
 import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -137,7 +137,7 @@ public class TestNetworkDriver implements MediumMessagingServiceNetworkDriver {
                 
                 MediumConsumerRecord cr = TestRecordGenerator.fromProducerRecord(pr);
                 
-                return MediumMessagingServiceUtils.toMedium(messageClass, cr);
+                return MessageUtils.toMedium(messageClass, cr);
             }
                         
         }        
@@ -169,7 +169,7 @@ public class TestNetworkDriver implements MediumMessagingServiceNetworkDriver {
                 
                 MediumConsumerRecord cr = TestRecordGenerator.fromProducerRecord(pr);
                 
-                return MediumMessagingServiceUtils.toMedium(messageClass, cr);
+                return MessageUtils.toMedium(messageClass, cr);
             }
                         
         }          
