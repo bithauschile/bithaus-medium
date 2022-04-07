@@ -95,9 +95,10 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     
     private void onData(Record<String,String> record, Map<String,String> headers, String topic, Long offset) throws MediumMessagingServiceException, SendToDeadLetterException {
                
-        String messageClassString = headers.get(MediumMessage.HEADER_MESSAGE_CLASS);
+        Class<I> expectedMessageClass = this.getInputMessageClass();
+        String incommingMessageClassString = headers.get(MediumMessage.HEADER_MESSAGE_CLASS);
         
-        if(messageClassString == null) {
+        if(incommingMessageClassString == null) {
             
             if(logger.isTraceEnabled()) {
 
@@ -108,19 +109,22 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
             
         }
         
-        Class<I> messageClass = null;
+        Class<? extends MediumMessage> incommingMessageClass = null;
         try {
         
-            messageClass = (Class<I>) Class.forName(messageClassString);
+            incommingMessageClass = (Class<? extends MediumMessage>) Class.forName(incommingMessageClassString);
             
         }
         catch(ClassNotFoundException e) {
             
-            throw new SendToDeadLetterException("Class " + messageClassString + " not found");
-        }
+            throw new SendToDeadLetterException("Class " + incommingMessageClassString + " not found");
+        }         
+        
+        if(!expectedMessageClass.isAssignableFrom(incommingMessageClass))
+            return;
         
         
-        I message = MediumStreamRecordConverter.toMedium(messageClass, record, topic, offset);
+        I message = MediumStreamRecordConverter.toMedium(expectedMessageClass, record, topic, offset);
         if(logger.isTraceEnabled())
             logger.trace("Dispatching message " + message.getUuid() + " to message handler method"); 
         
@@ -174,6 +178,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     
     public abstract Collection<O> onMessage(I message) throws MediumMessagingServiceException;     
      
+    public abstract Class<I> getInputMessageClass();
     
     public static class BadData {
         

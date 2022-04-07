@@ -13,10 +13,10 @@ package cl.bithaus.medium.stream;
 import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.service.driver.kafka.MediumKafkaUtils;
 import cl.bithaus.medium.utils.MessageUtils;
-import cl.bithaus.medium.message.service.driver.kafka.MediumMessagingServiceKafkaDriver;
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.record.MediumProducerRecord;
 import com.google.gson.Gson;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.common.header.Headers;
@@ -86,7 +86,16 @@ public class MediumStreamRecordConverter {
     
     public static Record<String,String> fromMedium(MediumMessage message) {
         
+        if(message == null)
+            return null;
+        
         MediumMessage.Metadata md = message.getMetadata();
+        
+        if(md.getKey() == null)
+            throw new NullPointerException("Metadata.key cannot be null");
+        
+        if(md.getTimestamp() == null)
+            md.setTimestamp(new Date().getTime());
         
         Record<String,String> record = new Record<>(md.getKey(), gson.toJson(message), md.getTimestamp());
         
@@ -102,7 +111,30 @@ public class MediumStreamRecordConverter {
         
         MediumProducerRecord mpr = MessageUtils.fromMedium(message);
         return new TestRecord<>(MediumKafkaUtils.fromMediumProducerRecord(mpr));        
-    }        
+    }     
+    
+    public static <M extends MediumMessage> M toMedium(Class<M> messageClass, TestRecord<String,String> record, String topic, Long offset) { 
+        
+        Map<String,String> headers = new HashMap<>();
+        
+        record.headers().forEach((h) -> {
+            headers.put(h.key(), new String(h.value()));
+        });
+        
+        MediumMessage.Metadata metadata = new MediumMessage.Metadata();
+        metadata.setKey(record.key());
+        metadata.setHeaders(headers);
+        metadata.setRxTopic(topic);
+        metadata.setSource(headers.get(MediumMessage.HEADER_MESSAGE_SOURCE));
+        metadata.setTarget(headers.get(MediumMessage.HEADER_MESSAGE_TARGET));
+        metadata.setTimestamp(record.timestamp());
+        metadata.setTopicOffset(offset);
+        
+        M message = gson.fromJson(record.value(), messageClass);        
+        message.setMetadata(metadata);
+        
+        return message;        
+    }
     
     public static Map<String,String> getHeadersMap(Headers headers) {
         

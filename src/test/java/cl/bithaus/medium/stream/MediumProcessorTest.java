@@ -16,9 +16,10 @@ import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -26,20 +27,14 @@ import org.apache.kafka.streams.TestInputTopic;
 import org.apache.kafka.streams.TestOutputTopic;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.TopologyTestDriver;
-import org.apache.kafka.streams.processor.api.Processor;
-import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.ProcessorSupplier;
-import org.apache.kafka.streams.processor.api.Record;
+import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.Stores;
 import org.apache.kafka.streams.test.TestRecord;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -136,6 +131,20 @@ public class MediumProcessorTest {
       
         KeyValueStore<String,String> kvs = testDriver.getKeyValueStore(storeName);
         
+        // another test message should be ignored
+        AnotherTestMessage anotherTestMessage = new AnotherTestMessage("lala");
+        anotherTestMessage.getMetadata().setKey("the-key");
+        anotherTestMessage.getMetadata().setTxTopic("");
+        inputTopic1.pipeInput(MediumStreamRecordConverter.fromMediumTestRecord(anotherTestMessage));
+
+        
+        Assertions.assertTrue(kvs.approximateNumEntries() == 0L);
+
+        
+        
+        
+        // ok, let's go..
+        
         TestMessage message = new TestMessage("hola");
         message.getMetadata().setKey("the-key");
         message.getMetadata().setTxTopic("");
@@ -154,7 +163,37 @@ public class MediumProcessorTest {
         Assertions.assertEquals(message.getData() + "-OK", tmcheck.getData());
         
         Assertions.assertTrue(outputTopic2.isEmpty());
-
+        
+        
+        TestMessage2 message2 = new TestMessage2("hola2");
+        message2.getMetadata().setKey("the-key");
+        message2.getMetadata().setTxTopic("");
+        
+        TestRecord<String,String> tr2 = MediumStreamRecordConverter.fromMediumTestRecord(message2);
+        
+        inputTopic1.pipeInput(tr2);
+        
+        // in this second iteration, approximateNumEntries honours its name
+        // and approximates 2 entries :-/
+        int numEntries = 0;
+        KeyValueIterator i = kvs.all();
+        while(i.hasNext()) {
+            
+            numEntries++;
+            i.next();
+        }
+        
+        Assertions.assertTrue(numEntries == 1);
+        Assertions.assertEquals(message2.getData(), kvs.get(message2.getMetadata().getKey()));
+        
+        Assertions.assertTrue(badDataSet.size() == 0);
+        Assertions.assertTrue(deadLetterSet.size() == 0);
+        
+        TestMessage tmcheck2 = gson.fromJson(outputTopic1.readValue(), TestMessage2.class);
+        
+        Assertions.assertEquals(message2.getData() + "-OK", tmcheck2.getData());
+        
+        Assertions.assertTrue(outputTopic2.isEmpty());
     }
 
     
@@ -175,6 +214,7 @@ public class MediumProcessorTest {
         public Collection<TestMessage> onMessage(TestMessage message) {
             
             this.stateStore.put(message.getMetadata().getKey(), message.getData());
+            this.stateStore.flush();
             
             message.setData(message.getData() + "-OK");
             
@@ -187,7 +227,62 @@ public class MediumProcessorTest {
             
         }
 
- 
+        @Override
+        public Class<TestMessage> getInputMessageClass() {
+            return TestMessage.class;
+        }
+
+
+        
     }
+
+
+    public static class AnotherTestMessage extends MediumMessage {
+
+         private static final AtomicLong serializer = new AtomicLong();
+
+        private String data;
+
+        public AnotherTestMessage() {
+
+            super("" + serializer.incrementAndGet());
+            initMetadata();
+        }
+
+
+        public AnotherTestMessage(String data) {
+
+            this();
+            this.data = data;
+            initMetadata();
+        }
+
+        private void initMetadata() {
+
+            this.getMetadata().setKey("key-" + getUuid());
+            this.getMetadata().setSource("source-system");
+            this.getMetadata().setTarget("target-system");
+            this.getMetadata().setTimestamp(new Date().getTime());
+
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+
+
+
+    }
+
     
+    public static class TestMessage2 extends TestMessage {
+
+        public TestMessage2(String data) {
+            super(data);
+        }
+    }
 }
