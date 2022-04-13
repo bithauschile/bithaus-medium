@@ -74,7 +74,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         }
         catch(MediumMessagingServiceException e) {
             
-            logger.error("Error processing record " + record);
+            logger.error("Error processing record " + record, e);
             
             if(this.badDataConsumer != null) {
                 
@@ -139,7 +139,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         }
         catch(Exception e) {
             
-            throw new MediumMessagingServiceException("Error processing medium message", e);
+            throw new MediumMessagingServiceException("Error processing medium message: " + e.getMessage(), e);
         }
         
         if(output != null) {
