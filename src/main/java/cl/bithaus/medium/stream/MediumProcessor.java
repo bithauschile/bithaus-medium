@@ -55,7 +55,13 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     public void init(ProcessorContext<String, String> context) {
 
         super.init(context);
-        this.init(context.appConfigs());
+        
+        try {
+            this.init(context.appConfigs());
+        }
+        catch(Exception e) {
+            throw new RuntimeException("Error initializing MediumProcessor: " + e, e);
+        }
     } 
     
     @Override
@@ -174,7 +180,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         return p;
     }
     
-    public abstract void init(Map<String,Object> configMap);
+    public abstract void init(Map<String,Object> configMap) throws MediumProcessorException;
     
     public abstract Collection<O> onMessage(I message) throws MediumMessagingServiceException;     
      

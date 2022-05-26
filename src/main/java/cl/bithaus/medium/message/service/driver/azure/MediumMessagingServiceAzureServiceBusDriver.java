@@ -250,7 +250,7 @@ public class MediumMessagingServiceAzureServiceBusDriver implements MediumMessag
                 this.procesor.close();
         }
         catch(Exception e) {
-            logger.error("Error trying to close processor", e);
+            throw new MediumMessagingServiceException("Error trying to close processor", e);
         }        
         
         try {
@@ -258,7 +258,7 @@ public class MediumMessagingServiceAzureServiceBusDriver implements MediumMessag
                 this.sender.close();
         }
         catch(Exception e) {
-            logger.error("Error trying to close sender", e);
+            throw new MediumMessagingServiceException("Error trying to close sender", e);
         }
         
         
