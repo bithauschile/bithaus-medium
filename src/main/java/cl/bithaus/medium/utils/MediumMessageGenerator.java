@@ -156,6 +156,8 @@ public abstract class MediumMessageGenerator<M extends MediumMessage> {
         for(int i = 0; i < quantity; i++) {
             
             long timestamp = from.getTime() + delta * i;
+            // control entries don't know milliseconds
+            timestamp = timestamp - (timestamp % 1000); 
             
             M m = this.getNextMessage();
             m.getMetadata().setTimestamp(timestamp);
