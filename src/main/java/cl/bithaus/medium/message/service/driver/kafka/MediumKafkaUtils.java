@@ -75,7 +75,7 @@ public class MediumKafkaUtils {
         
         kr.headers().forEach((h) -> {
         
-            headers.put(h.key(), new String(h.value()));
+            headers.put(h.key(), h.value()==null?null:new String(h.value()));
         });        
                                 
         MediumMessage.Metadata metadata = new MediumMessage.Metadata();

@@ -65,7 +65,7 @@ public class MediumStreamRecordConverter {
         Map<String,String> headers = new HashMap<>();
         
         record.headers().forEach((h) -> {
-            headers.put(h.key(), new String(h.value()));
+            headers.put(h.key(), h.value()==null?null:new String(h.value()));
         });
         
         MediumMessage.Metadata metadata = new MediumMessage.Metadata();
@@ -141,7 +141,7 @@ public class MediumStreamRecordConverter {
         Map<String,String> map = new HashMap<>();
         
         headers.forEach((h) -> {
-            map.put(h.key(), new String(h.value()));
+            map.put(h.key(), h.value()==null?null:new String(h.value()));
         });
         
         return map;

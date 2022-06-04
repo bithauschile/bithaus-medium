@@ -101,7 +101,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     
     private void onData(Record<String,String> record, Map<String,String> headers, String topic, Long offset) throws MediumMessagingServiceException, SendToDeadLetterException {
                
-        Class<I> expectedMessageClass = this.getInputMessageClass();
+        Class<? extends I> expectedMessageClass = this.getInputMessageClass();
         String incommingMessageClassString = headers.get(MediumMessage.HEADER_MESSAGE_CLASS);
         
         if(incommingMessageClassString == null) {
@@ -184,7 +184,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     
     public abstract Collection<O> onMessage(I message) throws MediumMessagingServiceException;     
      
-    public abstract Class<I> getInputMessageClass();
+    public abstract Class<? extends I> getInputMessageClass();
     
     public static class BadData {
         

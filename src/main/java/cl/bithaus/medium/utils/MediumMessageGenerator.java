@@ -114,7 +114,7 @@ public abstract class MediumMessageGenerator<M extends MediumMessage> {
     public MediumMessageGenerator() {
     }
     
-    public abstract void init(Map config);
+    public abstract void init(Map<String,String> config);
     
     protected abstract M getNextMessage();
     
@@ -162,8 +162,11 @@ public abstract class MediumMessageGenerator<M extends MediumMessage> {
             M m = this.getNextMessage();
             m.getMetadata().setTimestamp(timestamp);
             
-            if(keysArray != null)
-                m.getMetadata().setKey(keysArray[i%keysArray.length]);
+            if(m.getMetadata().getKey() == null) {
+            
+                if(keysArray != null)
+                    m.getMetadata().setKey(keysArray[i%keysArray.length]);
+            }
             
             messages.add(m);
             
