@@ -19,5 +19,5 @@ steps:
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: true
     effectivePomSkip: false
-    sonarQubeRunAnalysis: true
+    sonarQubeRunAnalysis: false
     sqMavenPluginVersionChoice: 'latest'
