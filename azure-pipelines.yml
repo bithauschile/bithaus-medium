@@ -21,3 +21,8 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
     sqMavenPluginVersionChoice: 'latest'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'bithausmedium'
+    publishLocation: 'Container'
