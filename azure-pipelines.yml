@@ -24,9 +24,9 @@ steps:
 - task: CopyFiles@2
   inputs:
     contents: 'target/bithaus-medium-1.0.jar'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/bhmedium/'
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/bhmedium/'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'bithausmedium'
     publishLocation: 'Container'
