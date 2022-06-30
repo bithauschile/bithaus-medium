@@ -23,10 +23,10 @@ steps:
     sqMavenPluginVersionChoice: 'latest'
 - task: CopyFiles@2
   inputs:
-    contents: 'target/**'
-    targetFolder: $(Build.ArtifactStagingDirectory)
+    contents: 'target/bithaus-medium-1.0.jar'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/bhmedium/'
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/bhmedium/'
     ArtifactName: 'bithausmedium'
     publishLocation: 'Container'
