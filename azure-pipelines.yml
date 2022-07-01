@@ -7,7 +7,7 @@ trigger:
 - master
 
 variables:
-  mavenRepoURL: 'https://bithaus.pkgs.visualstudio.com/_packaging/bithaus/maven/v1'
+  mavenRepoURL: 'https://bithaus.pkgs.visualstudio.com/_packaging/medium_artifact/maven/v1'
 
 pool:
   vmImage: ubuntu-latest
@@ -21,7 +21,7 @@ steps:
 - task: MavenAuthenticate@0
   displayName: Maven Authenticate Artifacts
   inputs:
-    artifactsFeeds: 'bithaus'
+    artifactsFeeds: 'medium_artifact'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom-devop.xml'
