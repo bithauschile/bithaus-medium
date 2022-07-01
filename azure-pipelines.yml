@@ -6,8 +6,6 @@
 trigger:
 - master
 
-variables:
-  mavenRepoURL: 'https://bithaus.pkgs.visualstudio.com/_packaging/medium_artifact/maven/v1'
 
 pool:
   vmImage: ubuntu-latest
@@ -29,7 +27,7 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
     mavenVersionOption: 'Default'
-    options: '-X -B -s $(mvnSettings.secureFilePath)  -DremoteRepositories=$(mavenRepoUrl) clean deploy -U'
+    options: '-X -B -s $(mvnSettings.secureFilePath) clean deploy -U'
     mavenAuthenticateFeed: true
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
