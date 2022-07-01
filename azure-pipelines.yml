@@ -6,6 +6,9 @@
 trigger:
 - master
 
+variables:
+  mavenRepoURL: 'https://bithaus.pkgs.visualstudio.com/_packaging/bithaus/maven/v1'
+
 pool:
   vmImage: ubuntu-latest
 
