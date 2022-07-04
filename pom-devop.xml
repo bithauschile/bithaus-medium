@@ -15,7 +15,7 @@
     <repositories>
         <repository>
         <id>medium_artifact</id>
-        <url>https://bithaus.pkgs.visualstudio.com/_packaging/medium_artifact/maven/v1</url>
+        <url>https://bithaus.pkgs.visualstudio.com/BithausMedium/_packaging/medium_artifact/maven/v1</url>
         <releases>
             <enabled>true</enabled>
         </releases>
@@ -27,7 +27,7 @@
     <distributionManagement>
         <repository>
         <id>medium_artifact</id>
-        <url>https://bithaus.pkgs.visualstudio.com/_packaging/medium_artifact/maven/v1</url>
+        <url>https://bithaus.pkgs.visualstudio.com/BithausMedium/_packaging/medium_artifact/maven/v1</url>
         <releases>
             <enabled>true</enabled>
         </releases>
