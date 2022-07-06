@@ -31,13 +31,10 @@ stages:
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom-devop.xml'
+        options: '-X -B -s $(mvnSettings.secureFilePath)  clean deploy -U'
+        mavenAuthenticateFeed: true
         publishJUnitResults: false
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
         mavenVersionOption: 'Default'
-        options: '-X -B -s $(mvnSettings.secureFilePath) clean deploy -U'
-        mavenAuthenticateFeed: true
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: false
-        sqMavenPluginVersionChoice: 'latest'
 
