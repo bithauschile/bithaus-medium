@@ -27,7 +27,7 @@ stages:
     - task: MavenAuthenticate@0
       displayName: Maven Authenticate Artifacts
       inputs:
-        artifactsFeeds: 'medium_artifact'
+        artifactsFeeds: 'bithaus'
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom-devop.xml'
