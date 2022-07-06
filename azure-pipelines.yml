@@ -7,37 +7,37 @@ trigger:
 - master
 
 
-pool:
-  vmImage: ubuntu-latest
+variables:
+  vmImageName: ubuntu-latest
 
-steps:
-- task: DownloadSecureFile@1
-  name: mvnSettings
-  displayName: 'Download Maven settings'
-  inputs:
-    secureFile: 'maven-azuredevops-settings.xml'
-- task: MavenAuthenticate@0
-  displayName: Maven Authenticate Artifacts
-  inputs:
-    artifactsFeeds: 'medium_artifact'
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom-devop.xml'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    mavenVersionOption: 'Default'
-    options: '-X -B -s $(mvnSettings.secureFilePath) clean deploy -U'
-    mavenAuthenticateFeed: true
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-    sqMavenPluginVersionChoice: 'latest'
-#- task: CopyFiles@2
-#  inputs:
-#    contents: 'target/bithaus-medium-1.0.jar'
-#    targetFolder: '$(Build.ArtifactStagingDirectory)'
-#- task: PublishBuildArtifacts@1
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#    ArtifactName: 'bithausmedium'
-#    publishLocation: 'Container'
+stages:
+- stage: Build
+  displayName: Maven Build stage
+  jobs:
+  - job: Build
+    displayName: Maven Build Artifact
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: DownloadSecureFile@1
+      name: mvnSettings
+      displayName: 'Download Maven settings'
+      inputs:
+        secureFile: 'maven-azuredevops-settings.xml'
+    - task: MavenAuthenticate@0
+      displayName: Maven Authenticate Artifacts
+      inputs:
+        artifactsFeeds: 'medium_artifact'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom-devop.xml'
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        mavenVersionOption: 'Default'
+        options: '-X -B -s $(mvnSettings.secureFilePath) clean deploy -U'
+        mavenAuthenticateFeed: true
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+        sqMavenPluginVersionChoice: 'latest'
+
