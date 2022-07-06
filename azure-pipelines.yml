@@ -31,7 +31,8 @@ stages:
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom-devop.xml'
-        options: '-X -B -s $(mvnSettings.secureFilePath) deploy -U'
+        goals: 'deploy'
+        options: '-s $(mvnSettings.secureFilePath) '
         mavenAuthenticateFeed: true
         publishJUnitResults: false
         javaHomeOption: 'JDKVersion'
