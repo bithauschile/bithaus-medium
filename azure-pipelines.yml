@@ -32,7 +32,7 @@ stages:
       inputs:
         mavenPomFile: 'pom-devop.xml'
         goals: 'deploy'
-        options: '-s $(mvnSettings.secureFilePath) '
+        options: '-s $(mvnSettings.secureFilePath)'
         mavenAuthenticateFeed: true
         publishJUnitResults: false
         javaHomeOption: 'JDKVersion'
