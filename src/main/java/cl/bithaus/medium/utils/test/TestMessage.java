@@ -79,6 +79,11 @@ public class TestMessage extends MediumMessage {
         
         return Objects.equals(this.getMetadata(), other.getMetadata());
     }
+
+    @Override
+    public String toString() {
+        return "TestMessage [data=" + data + "]";
+    }
  
     
     

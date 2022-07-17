@@ -49,7 +49,7 @@ public class TestMessageGeneratorTest {
     /**
      * Test of init method, of class TestMessageGenerator.
      */
-    @Test
+    // @Test
     public void testInit() throws Exception {
         
         String configFile = "conf-example/generator.properties";

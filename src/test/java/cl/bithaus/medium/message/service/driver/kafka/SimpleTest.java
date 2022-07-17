@@ -45,7 +45,7 @@ public class SimpleTest {
         
     }   
     
-    @Test
+    // @Test
     public void test1() throws Exception {
         
         java.util.logging.LogManager.getLogManager().readConfiguration(new FileInputStream("conf-example/logger.properties"));

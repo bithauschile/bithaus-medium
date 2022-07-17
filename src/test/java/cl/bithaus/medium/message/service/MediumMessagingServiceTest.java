@@ -67,10 +67,7 @@ public class MediumMessagingServiceTest {
         System.out.println("start");
         
         Map originals = new HashMap();
-//        originals.put(MediumMessagingServiceConfig.DEFAULT_PRODUCER_TOPIC_CONFIG, "topic1");
         originals.put(MediumMessagingServiceConfig.DRIVER_CLASSNAME_CONFIG, TestNetworkDriver.class.getName());
-//        originals.put(MediumMessagingServiceConfig.DRIVER_CONFIGFILE_CONFIG, "topic1");
-//        originals.put(MediumMessagingServiceConfig.LOGGER_SUFIX_CONFIG, "topic1");
         
         MediumMessagingServiceConfig config = new MediumMessagingServiceConfig(originals);
         MediumMessagingService instance = new MediumMessagingService(config);

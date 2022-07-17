@@ -67,7 +67,7 @@ public class MediumMessagingServiceKafkaDriverTest {
     /**
      * Test of init method, of class MediumMessagingServiceKafkaDriver.
      */
-    @Test
+    // @Test
     public void testConsumer() throws Exception {
         logger.info("init");
         
