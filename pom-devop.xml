@@ -3,19 +3,44 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cl.bithaus</groupId>
     <artifactId>bithaus-medium</artifactId>
-    <version>test-1.05</version>
+    <version>test-1.06</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>    
+        <maven.test.skip>true</maven.test.skip>            
     </properties>
     <name>Bithaus Medium</name>
+    <!--repositories>
+        <repository>
+        <id>medium_artifact</id>
+        <url>https://bithaus.pkgs.visualstudio.com/BithausMedium/_packaging/medium_artifact/maven/v1</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+        </repository>
+    </repositories-->
+    <distributionManagement>
+        <repository>
+        <id>medium_artifact</id>
+        <url>https://bithaus.pkgs.visualstudio.com/BithausMedium/_packaging/medium_artifact/maven/v1</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+        </repository>
+    </distributionManagement>
     <dependencies>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.0</version>
+            <version>2.8.6</version>
         </dependency>
 
         <dependency>

@@ -1,0 +1,41 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- master
+
+
+variables:
+  vmImageName: ubuntu-latest
+
+stages:
+- stage: Build
+  displayName: Maven Build stage
+  jobs:
+  - job: Build
+    displayName: Maven Build Artifact
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: DownloadSecureFile@1
+      name: mvnSettings
+      displayName: 'Download Maven settings'
+      inputs:
+        secureFile: 'maven-azuredevops-settings.xml'
+    - task: MavenAuthenticate@0
+      displayName: Maven Authenticate Artifacts
+      inputs:
+        artifactsFeeds: 'bithaus'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom-devop.xml'
+        goals: 'deploy'
+        options: '-s $(mvnSettings.secureFilePath)'
+        mavenAuthenticateFeed: true
+        publishJUnitResults: false
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        mavenVersionOption: 'Default'
+
