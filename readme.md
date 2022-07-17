@@ -27,7 +27,11 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
 
 <br>
 
-### Quickstart
+***
+
+<br>
+
+## Quickstart
 <b>Simple Message definition</b>
 
     public class TestMessage extends MediumMessage {
@@ -54,6 +58,11 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
             System.out.println("Name: " + message.name + " Age: " + message.age);
         }
     });
+
+    TestMessage tm = new TestMessage("Nico", 13);
+    instance.send(tm);
+    instance.send(tm, "topic1");   // if you know the topic name
+        
 <br>
 
 ***
@@ -73,7 +82,7 @@ __Producer__
             Map<K,V> originals = new HashMap<>();
             // First the Messaging Service configuration
             originals.put(MediumMessagingServiceConfig.DRIVER_CLASSNAME_CONFIG, MediumMessagingServiceKafkaDriver.class.getName());
-            originals.put(MediumMessagingServiceConfig.LOGGER_SUFIX_CONFIG, "KafkaConsumerApp");
+            originals.put(MediumMessagingServiceConfig.LOGGER_SUFIX_CONFIG, "KafkaProducerApp");
             // Now the Kafka driver configuration
             originals.put(MediumMessagingServiceKafkaDriverConfig.PRODUCER_ENABLED_CONFIG, "true");
             originals.put(MediumMessagingServiceKafkaDriverConfig.PRODUCER_BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -116,13 +125,13 @@ __Consumer__
         
         public static void Main(String args[]) throws Exception {
 
-            Logger logger = LoggerFactory.getLogger("ProducerApp");
+            Logger logger = LoggerFactory.getLogger("ConsumerApp");
             Gson gson = new Gson();
 
             Map<K,V> originals = new HashMap<>();
             // First the Messaging Service configuration
             originals.put(MediumMessagingServiceConfig.DRIVER_CLASSNAME_CONFIG, MediumMessagingServiceKafkaDriver.class.getName());
-            originals.put(MediumMessagingServiceConfig.LOGGER_SUFIX_CONFIG, "KafkaProducerApp");
+            originals.put(MediumMessagingServiceConfig.LOGGER_SUFIX_CONFIG, "KafkaConsumerApp");
             // Now the Kafka driver configuration
             originals.put(MediumMessagingServiceKafkaDriverConfig.CONSUMER_ENABLED_CONFIG, "true");
             originals.put(MediumMessagingServiceKafkaDriverConfig.CONSUMER_BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -168,6 +177,9 @@ __Consumer__
 <br>
 <br>
 
+***
+
+<br>
 
 ## Inspiration:
 Around 2010 the Santiago Stock Exchange (XSGO) launched their new trading infrastructure and went over the top with sub-millisecond and thousands of messages per second load capacity. The team managed to build a consistent messging framework based on (former) IBM WLLM that provided total ordering even on clustered consumers. In order to transport all the different market brokers instructions to the market (new orders, modifications, cancellings, etc) and their corresponding responses, an abstraction layer was developed on top of LLM. It was made of just 2 things. One was a message definition with enough metadata to do routing and deserializing the correct message class on destination. The other was the Messaging Service that interacted with the underlying message technolgy to allow the developer to work only based on message classes. 

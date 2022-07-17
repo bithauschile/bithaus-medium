@@ -155,6 +155,11 @@ public class MediumMessagingService {
         running = false;
         driver.stop();                
     }
+
+    public void send(MediumMessage message) throws MediumMessagingServiceException {
+
+        send(message, null);
+    }
     
     public void send(MediumMessage message, String topic) throws MediumMessagingServiceException {
         
@@ -182,7 +187,7 @@ public class MediumMessagingService {
             
             
             if(producerTopic == null)
-                throw new IllegalArgumentException("Topic cannot be null when is not default producer topic configured");
+                throw new IllegalArgumentException("Topic cannot be null when is no default producer topic configured");
             
             
             String serializedData = gson.toJson(message);
