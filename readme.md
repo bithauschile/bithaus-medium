@@ -33,15 +33,15 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
 
 ## Quickstart
 <b>Simple Message definition</b>
-
+```java
     public class TestMessage extends MediumMessage {
 
         public String name;
         public Integer age;
     }
-    
+```    
 <b>Using the MessagingService</b>
-
+```java
     Map configMap = ... // Uses Kafka style configuration
     MediumMessagingServiceConfig config = new MediumMessagingServiceConfig(configMap);
     MediumMessagingService instance = new MediumMessagingService(config);
@@ -61,8 +61,9 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
 
     TestMessage tm = new TestMessage("Nico", 13);
     instance.send(tm);
-    instance.send(tm, "topic1");   // if you know the topic name
-        
+    // or if you know the topic name
+    instance.send(tm, "topic1");   
+```        
 <br>
 
 ***
@@ -70,7 +71,7 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
 
 ## Complete examples
 __Producer__
-
+```java
     public class SimpleMediumKafkaProducerApp {
         
         private static Boolean running = true ;
@@ -117,10 +118,10 @@ __Producer__
 
         }
     }
-
+```
 
 __Consumer__
-
+```java
     public class SimpleMediumKafkaConsumerApp {
         
         public static void Main(String args[]) throws Exception {
@@ -172,7 +173,7 @@ __Consumer__
 
         }
     }
-
+```
 
 <br>
 <br>
