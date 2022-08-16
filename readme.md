@@ -1,7 +1,7 @@
 Bithaus Medium
 ======================
 
-**Medium allows developers to use message classes on Kafka without using the Schema Registry.**
+**Medium allows developers to use message classes on Kafka with no need of Schema Registry.**
 
 
 Medium provides an abstraction layer to Kafka or other streaming technologies so that you can use the same message library across your applications without the need of ugly generated message classes or having to worry about what message broker is handling your event. 
@@ -15,7 +15,7 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
   - Class declaration is a very good way of presenting data structures.
   - No more incompatible schema problems.
 - No custom Serialization/Deserialization needed. 
-- Allow topics to transport multiple types of messages. There are several use cases where you need total ordering among different kind of information. 
+- **Allow topics to transport multiple types of messages.** There are several use cases where you need total ordering among different kinds of events. 
 
 <br>
 
@@ -24,6 +24,11 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
 - MediumMessagingService allows users to request callbacks when a certain type of message arrives from the broker. 
 - MediumMessageProcessor is the Kafka Streams interface. Develop your logic here and plug it into the topology. No Serdes.
 - Testing tools include TestMessage, TestNetworkDriver, TestMessageGenerator that makes unit testing simple.
+
+<br>
+
+### Other integrations
+- Azure Service Bus Driver: https://github.com/bithauschile/bithaus-medium-azure
 
 <br>
 
