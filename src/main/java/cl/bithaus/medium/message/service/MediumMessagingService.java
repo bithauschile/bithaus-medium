@@ -219,8 +219,12 @@ public class MediumMessagingService {
             String key = metadata.getKey();
             String value = this.gson.toJson(message);
             
-            long timestamp = metadata.getTimestamp();
-            
+            Long timestamp = metadata.getTimestamp();
+
+            if(timestamp == null) {
+                timestamp = System.currentTimeMillis();
+                metadata.setTimestamp(timestamp);
+            }            
             
             MediumProducerRecord record = 
                     new MediumProducerRecord(key, value, topic, headers, timestamp);
@@ -234,35 +238,7 @@ public class MediumMessagingService {
         }
         
     }
-    
-//    public void sendRaw(String channel, String rawMessage) throws MediumMessagingServiceException {
-//        
-//        try {
-//            
-//            if(!running)
-//                throw new IllegalStateException("Messaging Service is not running");
-//            
-//            if(channel == null)
-//                throw new IllegalArgumentException("Channel cannot be null");
-//            
-//            if(rawMessage == null || rawMessage.length() < 1)
-//                throw new IllegalArgumentException("Message cannot be null nor empty");
-//            
-//            
-//            if(logger.isDebugEnabled()) {
-//                                
-//                logger.debug(String.format("Sending message [Ch:%s]: %s", channel, rawMessage));                
-//            }
-//                        
-//            driver.send(channel, rawMessage);
-//        }
-//        catch(Throwable e) {
-//            
-//            throw new MediumMessagingServiceException("Error sending message", e);
-//        }
-//        
-//    }
-    
+     
     public <M extends MediumMessage> void addMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler) {
     
         this.rawHandler.addMessageListener(messageType, handler);

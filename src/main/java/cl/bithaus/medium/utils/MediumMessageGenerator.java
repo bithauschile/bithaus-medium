@@ -47,6 +47,7 @@ public abstract class MediumMessageGenerator<M extends MediumMessage> {
         
         logger.info("Reading configurations from " + filename);
         
+        // file deepcode ignore PT: the filename comes from the command line
         Map originals = MapUtils.loadPropertiesFile(filename);
         Config config = new Config(originals);
         
@@ -93,6 +94,8 @@ public abstract class MediumMessageGenerator<M extends MediumMessage> {
         catch(Exception e) {
             throw new Exception("Error sending message: " + e, e);
         }
+
+        service.stop();
         
     }
 

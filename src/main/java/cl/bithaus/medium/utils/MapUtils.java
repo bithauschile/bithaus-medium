@@ -142,6 +142,16 @@ public class MapUtils {
         return new BigDecimal(val.toString());
     }    
     
+    public static Boolean getBoolean(Map map, String key) {
+        
+        Object val = map.get(key);
+        
+        if(val == null)
+            return null;
+
+        return Boolean.parseBoolean(val.toString());
+    }    
+    
     public static Map<Object,Object> loadPropertiesFile(String filename)
             throws FileNotFoundException, IOException {
 
@@ -154,4 +164,6 @@ public class MapUtils {
         return p;
         
     }    
+
+
 }
