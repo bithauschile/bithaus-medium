@@ -14,6 +14,8 @@ import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.message.MediumMessage;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 public class MessageUtils {
         
-    private static final Gson gson = new Gson();
+    private static final Gson gson = getMediumGson();
     
     public static MediumProducerRecord fromMedium(MediumMessage message) {
         
@@ -62,6 +64,11 @@ public class MessageUtils {
         
         return message;
                 
+    }
+
+    public static Gson getMediumGson() {
+
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create();
     }
     
     

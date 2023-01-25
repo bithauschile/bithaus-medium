@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public abstract class MediumMessageGenerator<M extends MediumMessage> {
     
     protected final static Logger logger = LoggerFactory.getLogger(MediumMessageGenerator.class);
-    private final static Gson gson = new Gson();
+    private final static Gson gson = MessageUtils.getMediumGson();
 
     
     

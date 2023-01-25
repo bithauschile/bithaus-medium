@@ -4,21 +4,25 @@
  */
 package cl.bithaus.medium.message.service;
 
-import cl.bithaus.medium.message.MediumMessage;
-import cl.bithaus.medium.message.MediumMessage.Metadata;
-import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
-import cl.bithaus.medium.message.exception.SendToDeadLetterException;
-import cl.bithaus.medium.record.MediumConsumerRecord;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
-import cl.bithaus.medium.record.MediumProducerRecord;
-import cl.bithaus.medium.utils.MapUtils;
-import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.function.Consumer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+
+import cl.bithaus.medium.message.MediumMessage;
+import cl.bithaus.medium.message.MediumMessage.Metadata;
+import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
+import cl.bithaus.medium.message.exception.SendToDeadLetterException;
+import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
+import cl.bithaus.medium.record.MediumConsumerRecord;
+import cl.bithaus.medium.record.MediumProducerRecord;
+import cl.bithaus.medium.utils.MapUtils;
+import cl.bithaus.medium.utils.MessageUtils;
 
 /**
  * Medium Messagin Service
@@ -66,7 +70,7 @@ public class MediumMessagingService {
         
         initDriver();
         
-        this.gson = new Gson();
+        this.gson = MessageUtils.getMediumGson();
     }
     
     private void initDriver() throws MediumMessagingServiceException {

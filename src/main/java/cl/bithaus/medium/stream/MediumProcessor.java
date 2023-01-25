@@ -40,7 +40,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected Gson gson = new Gson();
+    protected Gson gson = MessageUtils.getMediumGson();
     
     private Consumer<BadData> badDataConsumer;
     private Consumer<BadData> deadLetterConsumer;

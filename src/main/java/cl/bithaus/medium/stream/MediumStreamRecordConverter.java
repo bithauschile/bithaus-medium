@@ -30,7 +30,7 @@ import org.apache.kafka.streams.test.TestRecord;
  */
 public class MediumStreamRecordConverter {
         
-    private static final Gson gson = new Gson();
+    private static final Gson gson = MessageUtils.getMediumGson();
         
     public static MediumConsumerRecord getConsumerRecord(Record r, RecordMetadata metadata) {
         

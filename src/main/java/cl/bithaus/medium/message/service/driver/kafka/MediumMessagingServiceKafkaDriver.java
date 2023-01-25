@@ -10,19 +10,11 @@
  */
 package cl.bithaus.medium.message.service.driver.kafka;
 
-import cl.bithaus.medium.message.MediumMessage;
-import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
-import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
-import cl.bithaus.medium.record.MediumConsumerRecord;
-import cl.bithaus.medium.record.MediumProducerRecord;
-import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +24,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.Semaphore;
+
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
@@ -45,12 +38,16 @@ import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.header.Header;
-import org.apache.kafka.common.header.internals.RecordHeader;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
+import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriver;
+import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
+import cl.bithaus.medium.record.MediumConsumerRecord;
+import cl.bithaus.medium.record.MediumProducerRecord;
 
 /**
  * Simple

@@ -10,15 +10,12 @@
  */
 package cl.bithaus.medium.message.service.driver.kafka;
 
-import cl.bithaus.medium.message.MediumMessage;
-import cl.bithaus.medium.record.MediumConsumerRecord;
-import cl.bithaus.medium.record.MediumProducerRecord;
-import com.google.gson.Gson;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Header;
@@ -27,13 +24,20 @@ import org.apache.kafka.common.header.internals.RecordHeader;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.apache.kafka.common.record.TimestampType;
 
+import com.google.gson.Gson;
+
+import cl.bithaus.medium.message.MediumMessage;
+import cl.bithaus.medium.record.MediumConsumerRecord;
+import cl.bithaus.medium.record.MediumProducerRecord;
+import cl.bithaus.medium.utils.MessageUtils;
+
 /**
  *
  * @author jmakuc
  */
 public class MediumKafkaUtils {
     
-    private static final Gson gson = new Gson();
+    private static final Gson gson = MessageUtils.getMediumGson();
 
     
     public static ProducerRecord<String,String> fromMediumProducerRecord(MediumProducerRecord src) {
