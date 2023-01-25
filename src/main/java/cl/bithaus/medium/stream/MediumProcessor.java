@@ -14,6 +14,8 @@ package cl.bithaus.medium.stream;
 import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
+import cl.bithaus.medium.utils.MessageUtils;
+
 import com.google.gson.Gson;
 import java.util.Collection;
 import java.util.Map;
