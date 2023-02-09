@@ -23,12 +23,19 @@ public interface MediumMessagingServiceNetworkDriver {
     public void init(Map driverProperties, MediumMessagingServiceNetworkDriverCallback callback) throws MediumMessagingServiceException;
     
     /**
-     * Sends a messge to the underlying Kafka
+     * Sends a messge to the underlying messaging system synchronously
      * @param record record to be sent
      * @throws MediumMessagingServiceException 
      */
     public void send(MediumProducerRecord record) throws MediumMessagingServiceException;
     
+    /**
+     * Sends a messge to the underlying messaging system asynchronously
+     * @param record record to be sent
+     * @throws MediumMessagingServiceException 
+     */
+    public void sendAsync(MediumProducerRecord record) throws MediumMessagingServiceException;
+
     /**
      * Subscribe the underlying consume to read messages from a limited group 
      * of topics.

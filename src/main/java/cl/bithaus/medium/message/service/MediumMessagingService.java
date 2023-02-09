@@ -160,13 +160,35 @@ public class MediumMessagingService {
         driver.stop();                
     }
 
+    /**
+     * Synchroneous message send to the default topic
+     * @param message
+     * @throws MediumMessagingServiceException
+     */
     public void send(MediumMessage message) throws MediumMessagingServiceException {
 
         send(message, null);
     }
     
+    /**
+     * Synchroneous message send to the specified topic
+     * @param message
+     * @param topic
+     * @throws MediumMessagingServiceException
+     */
     public void send(MediumMessage message, String topic) throws MediumMessagingServiceException {
         
+        send(message, topic, false);
+    }
+
+    /**
+     * Message sending through the underlying transport system
+     * @param message Message to send
+     * @param topic Topic to send the message to (null to use default topic)
+     * @param async If true, the message will be sent asynchronously
+     */
+    public void send(MediumMessage message, String topic, boolean async) throws MediumMessagingServiceException {
+
         try {
             
             if(!running)
@@ -230,10 +252,17 @@ public class MediumMessagingService {
                 metadata.setTimestamp(timestamp);
             }            
             
-            MediumProducerRecord record = 
+            MediumProducerRecord outputRecord = 
                     new MediumProducerRecord(key, value, topic, headers, timestamp);
              
-            driver.send(record);
+            if(async) {
+                
+                this.driver.sendAsync(outputRecord);
+            }
+            else {
+                
+                this.driver.send(outputRecord);
+            }
             
         }
         catch(Throwable e) {

@@ -88,7 +88,8 @@ public abstract class MediumMessageGenerator<M extends MediumMessage> {
                 
                 if(logger.isTraceEnabled())
                     logger.trace("OUT: " + gson.toJson(m));
-                service.send(m, topic);
+
+                service.send(m, topic, true);
             }
         }
         catch(Exception e) {

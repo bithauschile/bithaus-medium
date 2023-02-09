@@ -201,6 +201,39 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
 
     }
 
+    /**
+     * Synchronous sending to kafka 
+     * @param record
+     * @throws MediumMessagingServiceException 
+     */
+    @Override
+    public void sendAsync(MediumProducerRecord record) throws MediumMessagingServiceException {
+
+        try {
+            
+            ProducerRecord<String,String> pr = MediumKafkaUtils.fromMediumProducerRecord(record);
+            
+            if(logger.isTraceEnabled())
+                logger.trace("OUT > " + pr);
+            
+            this.producer.send(pr, (metadata, exception) -> {
+
+                if(exception != null) {
+                    logger.error("Error sending message to kafka, topic: " + pr.topic() + ", partition: " + pr.partition() + ", key: " + pr.key() + ", value: " + pr.value(), exception);
+                }
+                else {
+                    if(logger.isTraceEnabled())
+                        logger.trace("Message sent to kafka, metadata: " + metadata);
+                }
+            });            
+        }
+        catch(Exception e) {
+            
+            throw new MediumMessagingServiceException("Error sending producer record to kafka client", e);
+        }
+
+    }    
+
     @Override
     public String[] getAvailableTopic() {
         

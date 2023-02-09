@@ -76,6 +76,14 @@ public class TestNetworkDriver implements MediumMessagingServiceNetworkDriver {
         this.recordQueue.offer(record);
     }
 
+    /**
+     * Same as send
+     */
+    @Override
+    public void sendAsync(MediumProducerRecord record) throws MediumMessagingServiceException {
+        this.send(record);
+    }
+
     @Override
     public String[] getAvailableTopic() {
         return this.topics.toArray(new String[this.topics.size()]);

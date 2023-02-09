@@ -17,5 +17,7 @@ import java.util.Collection;
 public abstract class MessageTranslator <O extends MediumMessage> {
     
     public abstract Collection<O> toMedium(MediumConsumerRecord record) throws MessageTranslatorException;
+
+    public abstract String getName();
     
 }
