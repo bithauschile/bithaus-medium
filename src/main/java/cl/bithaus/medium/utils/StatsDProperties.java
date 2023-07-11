@@ -20,16 +20,16 @@ public class StatsDProperties {
      * Hostname of the statsD server. Default: localhost
      * If you use vía socket, you can use a unix socket path
      */
-    private String hostname = "localhost";
+    private String hostname = null;
     /**
      * Port of the statsD server. Default: 8125
      * If you use vía socket, put 0
      */
-    private Integer port = 8125;
+    private Integer port = null;
     /**
      * Prefix of the metrics. 
      */
-    private String metricsPrefix;
+    private String metricsPrefix = null;
 
     public StatsDProperties() {
      
