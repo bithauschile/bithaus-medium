@@ -201,19 +201,36 @@ public class StatsD {
 
         NonBlockingStatsDClientBuilder builder = new NonBlockingStatsDClientBuilder();
 
-        if(statsDProperties.getHostname() != null) {
+        if(statsDProperties == null) {
 
-            builder.hostname(statsDProperties.getHostname());
+            String hostname = System.getenv("DOGSTATSD_HOST");
 
-            if(statsDProperties.getPort() != null) {
-                builder.port(statsDProperties.getPort());
+            if(hostname != null && hostname.length() > 0) {
+                builder.hostname(hostname);
+            }
+
+            String port = System.getenv("DOGSTATSD_PORT");
+
+            if(port != null && port.length() > 0) {
+                builder.port(Integer.parseInt(port));
+            }
+
+        }
+        else {
+
+            if(statsDProperties.getHostname() != null) {
+
+                builder.hostname(statsDProperties.getHostname());
+
+                if(statsDProperties.getPort() != null) {
+                    builder.port(statsDProperties.getPort());
+                }
+            }
+
+            if(statsDProperties.getMetricsPrefix() != null) {
+                builder.prefix(statsDProperties.getMetricsPrefix());
             }
         }
-
-        if(statsDProperties.getMetricsPrefix() != null) {
-            builder.prefix(statsDProperties.getMetricsPrefix());
-        }
-
         
 
         NonBlockingStatsDClient client = builder.build();
