@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cl.bithaus</groupId>
     <artifactId>bithaus-medium</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -11,7 +11,9 @@
         <maven.compiler.target>11</maven.compiler.target>    
     </properties>
     <name>Bithaus Medium</name>
-    <description>Medium allows developers to use message classes on Kafka without using the Schema Registry.</description>
+    <description>
+        Medium allows developers to use message classes on Kafka without using the Schema Registry and have multiple message types on a single topic.
+    </description>
     <dependencies>
                 
         <dependency>
@@ -19,7 +21,6 @@
             <artifactId>gson</artifactId>
             <version>2.9.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -30,7 +31,12 @@
             <artifactId>slf4j-jdk14</artifactId>
             <version>1.7.36</version>
         </dependency>
- 
+ 		<dependency>
+			<groupId>com.datadoghq</groupId>
+			<artifactId>java-dogstatsd-client</artifactId>
+			<version>4.2.0</version>
+		</dependency>	
+
         <!-- KAFKA -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
@@ -82,7 +88,40 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <version>2.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <source>
 
+                                log.info("    ____  _ __  __                        _____       ______                         "); 
+                                log.info("   / __ )(_) /_/ /_  ____ ___  _______   / ___/____  / __/ /__      ______ _________ "); 
+                                log.info("  / __  / / __/ __ \\/ __ `/ / / / ___/   \\__ \\/ __ \\/ /_/ __/ | /| / / __ `/ ___/ _ \\"); 
+                                log.info(" / /_/ / / /_/ / / / /_/ / /_/ (__  )   ___/ / /_/ / __/ /_ | |/ |/ / /_/ / /  /  __/"); 
+                                log.info("/_____/_/\\__/_/ /_/\\__,_/\\__,_/____/   /____/\\____/_/  \\__/ |__/|__/\\__,_/_/   \\___/ "); 
+
+                                log.info(""); 
+                                log.info("${project.name} - Version ${project.version}"); 
+                                log.info("${project.description}");    
+                                log.info(""); 
+                                log.info("=====================================================================================");
+                                log.info(""); 
+
+                            </source>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+            
+            <!-- En construcción no devops agregamos los fuentes -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

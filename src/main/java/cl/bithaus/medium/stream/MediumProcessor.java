@@ -15,6 +15,7 @@ import cl.bithaus.medium.message.MediumMessage;
 import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
 import cl.bithaus.medium.utils.MessageUtils;
+import cl.bithaus.medium.utils.StatsD;
 
 import com.google.gson.Gson;
 import java.util.Collection;
@@ -34,8 +35,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Medium's default deserializer and message dispatcher
  * @author jmakuc
- * @param <I>
- * @param <O>
+ * @param <I> Input message type
+ * @param <O> Output message type
  */
 public abstract class MediumProcessor<I extends MediumMessage, O extends MediumMessage> 
         extends ContextualProcessor<String, String, String, String> {
@@ -46,6 +47,8 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     
     private Consumer<BadData> badDataConsumer;
     private Consumer<BadData> deadLetterConsumer;
+
+    private StatsD statsD;
     
       
     public MediumProcessor() {
@@ -83,6 +86,8 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         catch(MediumMessagingServiceException e) {
             
             logger.error("Error processing record " + record, e);
+
+            this.statsD.recordException("Error processing record", e);
             
             if(this.badDataConsumer != null) {
                 
