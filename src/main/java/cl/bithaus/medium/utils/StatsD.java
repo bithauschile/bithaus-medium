@@ -204,42 +204,47 @@ public class StatsD {
 
         NonBlockingStatsDClientBuilder builder = new NonBlockingStatsDClientBuilder();
 
-        if(statsDProperties == null) {
+        String host = null;
+        String port = null;
+        String prefix = null;
 
-            String hostname = System.getenv("DOGSTATSD_HOST");
+        if(statsDProperties != null) {
 
-            if(hostname != null && hostname.length() > 0) {
-                builder.hostname(hostname);
-            }
-            else {
-                builder.hostname(STATSD_HOST_DEFAULT);
-            }
-
-            String port = System.getenv("DOGSTATSD_PORT");
-
-            if(port != null && port.length() > 0) {
-                builder.port(Integer.parseInt(port));
-            }
-            else {
-                builder.port(STATSD_PORT_DEFAULT);
-            }
+            host = statsDProperties.getHostname();
+            port = statsDProperties.getPort()!=null?statsDProperties.getPort().toString():null;
+            prefix = statsDProperties.getMetricsPrefix();
 
         }
-        else {
 
-            if(statsDProperties.getHostname() != null) {
-
-                builder.hostname(statsDProperties.getHostname());
-
-                if(statsDProperties.getPort() != null) {
-                    builder.port(statsDProperties.getPort());
-                }
+        if(host == null || host.length() == 0) {
+            host = System.getenv("DOGSTATSD_HOST");
+            if(host == null || host.length() == 0) {
+                host = STATSD_HOST_DEFAULT;
             }
+        }        
 
-            if(statsDProperties.getMetricsPrefix() != null) {
-                builder.prefix(statsDProperties.getMetricsPrefix());
+        if(port == null || port.length() == 0) {
+            port = System.getenv("DOGSTATSD_PORT");
+            if(port == null || port.length() == 0) {
+                port = STATSD_PORT_DEFAULT.toString();
             }
         }
+
+        if(prefix == null || prefix.length() == 0) {
+            prefix = System.getenv("DOGSTATSD_PREFIX");
+            if(prefix == null || prefix.length() == 0) {
+                prefix = service;
+            }
+        }
+
+        if(host != null && host.length() > 0)
+            builder.hostname(host);
+        
+        if(port != null && port.length() > 0)
+            builder.port(Integer.parseInt(port));
+
+        if(prefix != null && prefix.length() > 0)
+            builder.prefix(prefix);
         
 
         NonBlockingStatsDClient client = builder.build();
