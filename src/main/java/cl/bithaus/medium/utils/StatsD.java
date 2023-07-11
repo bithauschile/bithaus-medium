@@ -33,6 +33,9 @@ public class StatsD {
 
     public static final Logger log = LoggerFactory.getLogger(StatsD.class);
 
+    public static final String STATSD_HOST_DEFAULT = "/var/run/datadog/dsd.socket";
+    public static final Integer STATSD_PORT_DEFAULT = 0;
+
     private StatsDClient client;
 
     public StatsD(StatsDClient client) {
@@ -208,11 +211,17 @@ public class StatsD {
             if(hostname != null && hostname.length() > 0) {
                 builder.hostname(hostname);
             }
+            else {
+                builder.hostname(STATSD_HOST_DEFAULT);
+            }
 
             String port = System.getenv("DOGSTATSD_PORT");
 
             if(port != null && port.length() > 0) {
                 builder.port(Integer.parseInt(port));
+            }
+            else {
+                builder.port(STATSD_PORT_DEFAULT);
             }
 
         }
