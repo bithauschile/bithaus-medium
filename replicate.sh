@@ -18,7 +18,7 @@ TARGET_MSGSVC_CONFIG_FILE=$CONF/target-service-kafka.properties
 
 JVM_OPT=-Djava.util.logging.config.file=conf-example/logger_unitTests.properties
 
-JAR=target/bithaus-medium-1.2.8-jar-with-dependencies.jar
+JAR=target/bithaus-medium-1.2.10-jar-with-dependencies.jar
 MAIN=cl.bithaus.medium.utils.TopicReplicator
 
 echo ""

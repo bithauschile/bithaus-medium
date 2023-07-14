@@ -2,10 +2,10 @@ package cl.bithaus.medium.utils;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.kafka.clients.consumer.Consumer;
@@ -88,9 +88,7 @@ public class TopicReplicator {
     }
 
     public void replicate(final String sourceTopic, final String targetTopic, final Long sourceInitialOffset, final Long sourceEndOffset) throws Exception {
-
-        logger.info("Starting targer messaging service");
-        this.targetMsgSvc.start();        
+ 
 
         Producer<String,String> producer = ((MediumMessagingServiceKafkaDriver) this.targetMsgSvc.getDriver()).getProducer();    
 
@@ -101,57 +99,81 @@ public class TopicReplicator {
 
         Consumer<String,String> consumer = sourceDriver.getConsumer();
 
-        CountDownLatch latch = new CountDownLatch(1);
-        AtomicBoolean ok = new AtomicBoolean(false);
 
-        List<PartitionInfo> partitionInfo = consumer.partitionsFor(sourceTopic);
+        List<PartitionInfo> partitionInfoList = consumer.partitionsFor(sourceTopic);
         
-        if(partitionInfo == null || partitionInfo.isEmpty())
+        if(partitionInfoList == null || partitionInfoList.isEmpty())
             throw new RuntimeException("Could not find topic " + sourceTopic);
 
-        List<TopicPartition> topicParticionList = new ArrayList<>();
-        partitionInfo.forEach((pi) -> {
-            topicParticionList.add(new TopicPartition(pi.topic(), pi.partition()));
+        List<TopicPartition> topicPartitionList = new ArrayList<>();
+        partitionInfoList.forEach((p) -> {
+            logger.info("Partition: " + p.partition() + " Leader: " + p.leader() + " Replicas: " + p.replicas() + " ISR: " + p.inSyncReplicas()); 
+            topicPartitionList.add(new TopicPartition(p.topic(), p.partition()));
         });
 
-        consumer.assign(topicParticionList);
+        List<TopicPartition> partitionsOk = new ArrayList<>();
+
+
+        consumer.subscribe(Collections.singletonList(sourceTopic));
         
-        topicParticionList.forEach((p) -> {
-                        
-            logger.info("Seeking partition (" + p.topic() + "-" + p.partition() + ") to offset " + sourceInitialOffset);                         
-            consumer.seek(p, sourceInitialOffset);
+
+
+        do {
+
+            logger.info("Polling to assign partitions");
+            consumer.poll(Duration.ofSeconds(1));
+        
+            Set<TopicPartition> assignedPartitions = consumer.assignment();
+
+            if(assignedPartitions != null && !assignedPartitions.isEmpty()) {
+                logger.info("Assigned partitions: " + assignedPartitions.size());
+                break;
+            }
+        }
+        while(true); 
+
+        
+
+        // consumer.assign(topicPartitionList);
+        consumer.seekToBeginning(topicPartitionList);
+        consumer.poll(Duration.ofSeconds(1));
+        
+
+        topicPartitionList.forEach((tp) -> {
+
+            Long beginningOffset = consumer.position(tp);
+
+            logger.info("Beginning offset - Partition " + tp.topic() + "-" + tp.partition() + " beginning offset: " + beginningOffset);
+
+            if(sourceInitialOffset >= beginningOffset) {
+                partitionsOk.add(tp);
+            }            
         });
 
+        consumer.seekToEnd(topicPartitionList);
+        consumer.poll(Duration.ofSeconds(1));
+
+        topicPartitionList.forEach((tp) -> {
+
+            Long endOffset = consumer.position(tp);
+
+            logger.info("End offset - Partition " + tp.topic() + "-" + tp.partition() + " end offset: " + endOffset);
+
+            if(sourceInitialOffset < endOffset) {
+
+                if(!partitionsOk.contains(tp))
+                    partitionsOk.add(tp);
+            }            
+            else {
+                    
+                    partitionsOk.remove(tp);
+            }
+        });
+         
         
-        // consumer.subscribe(java.util.Arrays.asList(sourceTopic), new org.apache.kafka.clients.consumer.ConsumerRebalanceListener() {
 
-        //     @Override
-        //     public void onPartitionsRevoked(java.util.Collection<org.apache.kafka.common.TopicPartition> partitions) {
-        //         logger.error("Partitions revoked");
-        //     }
-
-        //     @Override
-        //     public void onPartitionsAssigned(java.util.Collection<org.apache.kafka.common.TopicPartition> partitions) {
-        //         logger.info("Partitions assigned");
-
-        //         partitions.forEach((p) -> {
-                            
-        //             logger.info("Seeking partition (" + p.topic() + "-" + p.partition() + ") to offset " + sourceInitialOffset);                         
-        //             consumer.seek(p, sourceInitialOffset);
-        //         });
-
-        //         ok.set(true);
-        //         latch.countDown();
-        //     }
-        // });
-
-        // consumer.poll(Duration.ofSeconds(1));
-
-        // latch.await();
-
-        // if(!ok.get())
-            // throw new RuntimeException("Could not subscribe to topic " + sourceTopic); 
-
+        if(partitionsOk.isEmpty())
+            throw new RuntimeException("Initial offset " + sourceInitialOffset + " is greater than end offset of all partitions");
 
 
         Set<TopicPartition> topicParticionSet = consumer.assignment();
@@ -160,10 +182,27 @@ public class TopicReplicator {
             throw new RuntimeException("No topic partitions assigned"); 
 
         if(topicParticionSet.size() > 1)
-            throw new RuntimeException("Only 1 topic partition is supported at a time");
+            throw new RuntimeException("Only 1 topic partition is supported at a time");        
+                
 
+        topicPartitionList.forEach((p) -> {
 
+            if(!partitionsOk.contains(p))
+                return;
+                        
+            logger.info("Seeking partition (" + p.topic() + "-" + p.partition() + ") to offset " + sourceInitialOffset);                         
+            consumer.seek(p, sourceInitialOffset);
+        });
+            
+            
         logger.info("Ready to read"); 
+
+
+
+        logger.info("Starting targer messaging service");
+        this.targetMsgSvc.start();      
+        
+        logger.info("Starting replication ************************");
 
         while(true) {
 
