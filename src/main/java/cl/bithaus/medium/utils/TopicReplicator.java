@@ -3,6 +3,7 @@ package cl.bithaus.medium.utils;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.header.Header;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,10 +115,7 @@ public class TopicReplicator {
 
         List<TopicPartition> partitionsOk = new ArrayList<>();
 
-
         consumer.subscribe(Collections.singletonList(sourceTopic));
-        
-
 
         do {
 
@@ -236,7 +235,16 @@ public class TopicReplicator {
                     return;
                 }
 
-                ProducerRecord<String,String> producerRecord = new ProducerRecord<String,String>(targetTopic, cr.key(), cr.value());
+                final List<Header> i = new LinkedList<>();
+                cr.headers().forEach((h) -> {
+                                    
+                    i.add(h);                    
+                });
+
+
+
+                ProducerRecord<String,String> producerRecord = new ProducerRecord<String,String>(targetTopic, cr.partition(), cr.timestamp(), cr.key(), cr.value(), (Iterable<Header>) i);
+
                 producer.send(producerRecord);
                 
             });
