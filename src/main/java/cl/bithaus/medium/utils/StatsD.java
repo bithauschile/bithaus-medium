@@ -36,6 +36,10 @@ public class StatsD {
     public static final String STATSD_HOST_DEFAULT = "/var/run/datadog/dsd.socket";
     public static final Integer STATSD_PORT_DEFAULT = 0;
 
+    public static final String SYSTEM_PROPERTY_DD_SERVICE = "dd.service";
+    public static final String SYSTEM_PROPERTY_DD_ENV = "dd.env";
+    public static final String SYSTEM_PROPERTY_DD_VERSION = "dd.version";
+
     private StatsDClient client;
 
     public StatsD(StatsDClient client) {
@@ -177,28 +181,21 @@ public class StatsD {
 
         // log.info("Configurando StatsDClient: " + statsDProperties);
 
-        String service = System.getProperty("dd.service");
+        String service = System.getProperty(SYSTEM_PROPERTY_DD_SERVICE);
 
-        if(service != null && service.length() > 0)
+        if(service == null || service.length() == 0)
             service = System.getenv("DD_SERVICE");
 
-        String env = System.getProperty("dd.env");
+        String env = System.getProperty(SYSTEM_PROPERTY_DD_ENV);
 
-        if(env != null && env.length() > 0)
+        if(env == null || env.length() == 0)
             env = System.getenv("DD_ENV");
         
-        String version = System.getProperty("dd.version");
+        String version = System.getProperty(SYSTEM_PROPERTY_DD_VERSION);
 
-        if(version != null && version.length() > 0)
+        if(version == null || version.length() == 0)
             version = System.getenv("DD_VERSION");
-
-        if(version == null || version.length() == 0) {
-            version = StatsD.class.getPackage().getImplementationVersion();
-            if(version != null && version.length() > 0)
-                System.setProperty("dd.version", version);
-        }
-
-        
+       
         
 
 
