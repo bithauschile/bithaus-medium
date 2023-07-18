@@ -16,6 +16,8 @@ import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.utils.MessageUtils;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+
 import com.google.gson.Gson;
 import java.util.LinkedList;
 import java.util.Map;
@@ -41,6 +43,7 @@ public class MediumMessagingServiceDefaultRawHandler implements MediumMessagingS
     }
 
     @Override
+    @WithSpan
     public void onData(MediumConsumerRecord record) throws MediumMessagingServiceException, SendToDeadLetterException {
         
         String key = record.getKey();

@@ -16,6 +16,7 @@ import cl.bithaus.medium.message.exception.MediumMessagingServiceException;
 import cl.bithaus.medium.message.exception.SendToDeadLetterException;
 import cl.bithaus.medium.utils.MessageUtils;
 import cl.bithaus.medium.utils.StatsD;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 
 import com.google.gson.Gson;
 import java.util.Collection;
@@ -69,6 +70,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         }
     } 
     
+    @WithSpan
     @Override
     public void process(Record<String, String> record) {
         
@@ -106,6 +108,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         }
     }      
     
+    @WithSpan
     private void onData(Record<String,String> record, Map<String,String> headers, String topic, Long offset) throws MediumMessagingServiceException, SendToDeadLetterException {
                
         Class<? extends I> expectedMessageClass = this.getInputMessageClass();

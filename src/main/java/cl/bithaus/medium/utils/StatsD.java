@@ -42,6 +42,8 @@ public class StatsD {
 
     private StatsDClient client;
 
+    private static StatsD instance;
+
     public StatsD(StatsDClient client) {
         this.client = client;
     }
@@ -179,7 +181,9 @@ public class StatsD {
     
     public static StatsD createFromEnvAndProperties(StatsDProperties statsDProperties) {
 
-        // log.info("Configurando StatsDClient: " + statsDProperties);
+        
+        if(instance != null)
+            return instance;        
 
         String service = System.getProperty(SYSTEM_PROPERTY_DD_SERVICE);
 
@@ -276,6 +280,8 @@ public class StatsD {
             versionOk = true;
         }
 
+        instance = new StatsD(client);
+
         if(!serviceOk || !envOk || !versionOk) {
          
             String text = "";
@@ -297,8 +303,7 @@ public class StatsD {
             client.recordEvent(event);            
         }
 
-
-        return new StatsD(client);        
+        return instance;
     }
 
 

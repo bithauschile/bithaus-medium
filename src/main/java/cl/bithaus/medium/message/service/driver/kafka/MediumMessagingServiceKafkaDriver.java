@@ -48,6 +48,7 @@ import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDri
 import cl.bithaus.medium.message.service.driver.MediumMessagingServiceNetworkDriverCallback;
 import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.record.MediumProducerRecord;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 
 /**
  * Simple
@@ -180,6 +181,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
      * @param record
      * @throws MediumMessagingServiceException 
      */
+    @WithSpan
     @Override
     public void send(MediumProducerRecord record) throws MediumMessagingServiceException {
 
@@ -206,6 +208,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
      * @param record
      * @throws MediumMessagingServiceException 
      */
+    @WithSpan
     @Override
     public void sendAsync(MediumProducerRecord record) throws MediumMessagingServiceException {
 
@@ -323,6 +326,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
         logger.info("Close OK");
     }    
 
+    @WithSpan
     @Override
     public void subscribe(String[] topics) throws MediumMessagingServiceException {
         

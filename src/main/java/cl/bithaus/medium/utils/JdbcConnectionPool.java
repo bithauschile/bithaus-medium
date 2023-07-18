@@ -15,6 +15,8 @@ import org.apache.kafka.common.config.ConfigDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+
 /**
  * JDBC Connection pool
  * @author jmakuc
@@ -38,6 +40,7 @@ public class JdbcConnectionPool {
 
     }
 
+    @WithSpan
     public synchronized Connection getConnection() throws SQLException{
 
         if(connections.size() < 1)
@@ -69,6 +72,7 @@ public class JdbcConnectionPool {
 
     }
 
+    @WithSpan
     private Connection getNewConnection() throws SQLException {
 
         return DriverManager.getConnection(config.getConnectionUrl(), config.getUsername(), config.getPassword());

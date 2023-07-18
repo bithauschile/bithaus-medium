@@ -23,6 +23,7 @@ import cl.bithaus.medium.record.MediumConsumerRecord;
 import cl.bithaus.medium.record.MediumProducerRecord;
 import cl.bithaus.medium.utils.MapUtils;
 import cl.bithaus.medium.utils.MessageUtils;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 
 /**
  * Medium Messagin Service
@@ -187,6 +188,7 @@ public class MediumMessagingService {
      * @param topic Topic to send the message to (null to use default topic)
      * @param async If true, the message will be sent asynchronously
      */
+    @WithSpan
     public void send(MediumMessage message, String topic, boolean async) throws MediumMessagingServiceException {
 
         try {

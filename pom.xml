@@ -36,6 +36,11 @@
 			<artifactId>java-dogstatsd-client</artifactId>
 			<version>4.2.0</version>
 		</dependency>	
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-instrumentation-annotations</artifactId>
+            <version>1.28.0</version>
+        </dependency>        
 
         <!-- KAFKA -->
         <dependency>
