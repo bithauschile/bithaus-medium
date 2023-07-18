@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cl.bithaus</groupId>
     <artifactId>bithaus-medium</artifactId>
-    <version>1.2.11</version>
+    <version>1.2.12</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,7 +51,12 @@
 			<artifactId>java-dogstatsd-client</artifactId>
 			<version>4.2.0</version>
 		</dependency>	        
- 
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-instrumentation-annotations</artifactId>
+            <version>1.28.0</version>
+        </dependency>  
+
         <!-- KAFKA -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
