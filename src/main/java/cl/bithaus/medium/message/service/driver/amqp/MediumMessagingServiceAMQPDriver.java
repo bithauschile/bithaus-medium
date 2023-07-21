@@ -118,6 +118,11 @@ public class MediumMessagingServiceAMQPDriver implements MediumMessagingServiceN
     }
 
     @Override
+    public void flush() throws MediumMessagingServiceException {
+        // TODO Auto-generated method stub           
+    }
+
+    @Override
     public void subscribe(String[] topics) throws MediumMessagingServiceException {
         
         throw new UnsupportedOperationException("Not implemented");

@@ -273,6 +273,16 @@ public class MediumMessagingService {
         }
         
     }
+
+    /**
+     * Flushes the underlying producer. This method should block until all
+     * the messages are acknowledged by the underlying messaging system.s
+     * @throws MediumMessagingServiceException
+     */
+    public void flush() throws MediumMessagingServiceException {
+        
+        this.driver.flush();
+    }
      
     public <M extends MediumMessage> void addMessageListener(Class<M> messageType, MediumMessageListener<? super M> handler) {
     

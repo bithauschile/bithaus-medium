@@ -84,6 +84,13 @@ public class TestNetworkDriver implements MediumMessagingServiceNetworkDriver {
         this.send(record);
     }
 
+    /**
+     * Does nothing
+     */
+    public void flush() throws MediumMessagingServiceException {
+        // Nothing to do
+    }
+
     @Override
     public String[] getAvailableTopic() {
         return this.topics.toArray(new String[this.topics.size()]);

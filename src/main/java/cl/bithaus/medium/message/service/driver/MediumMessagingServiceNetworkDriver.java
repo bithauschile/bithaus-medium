@@ -37,6 +37,13 @@ public interface MediumMessagingServiceNetworkDriver {
     public void sendAsync(MediumProducerRecord record) throws MediumMessagingServiceException;
 
     /**
+     * Flushes the underlying producer. This method should block until all 
+     * the messages are acknowledged by the underlying messaging system.
+     * @throws MediumMessagingServiceException
+     */
+    public void flush() throws MediumMessagingServiceException;
+
+    /**
      * Subscribe the underlying consume to read messages from a limited group 
      * of topics.
      * @param topics 

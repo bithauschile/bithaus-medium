@@ -238,6 +238,22 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
     }    
 
     @Override
+    @WithSpan
+    public void flush() throws MediumMessagingServiceException {
+        
+        try {
+            
+            this.producer.flush();
+        }
+        catch(Exception e) {
+            
+            throw new MediumMessagingServiceException("Error flushing producer", e);
+        }
+    }
+
+
+
+    @Override
     public String[] getAvailableTopic() {
         
         if(consumer == null)
