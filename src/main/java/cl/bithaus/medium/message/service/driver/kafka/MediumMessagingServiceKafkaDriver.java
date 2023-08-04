@@ -254,7 +254,7 @@ public class MediumMessagingServiceKafkaDriver implements MediumMessagingService
 
 
     @Override
-    public String[] getAvailableTopic() {
+    public String[] getAvailableTopics() {
         
         if(consumer == null)
             return null;

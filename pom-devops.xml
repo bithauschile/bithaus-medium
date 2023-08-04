@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cl.bithaus</groupId>
     <artifactId>bithaus-medium</artifactId>
-    <version>1.2.13</version>
+    <version>1.2.14</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,6 +82,18 @@
             <artifactId>geronimo-jms_1.1_spec</artifactId>
             <version>1.0</version>
         </dependency>   
+
+        <!-- MQTT -->
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>1.2.5</version>
+        </dependency> 
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.76</version>
+        </dependency>                
         
         <!-- TEST -->
         <dependency>

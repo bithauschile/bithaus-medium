@@ -129,7 +129,7 @@ public class MediumMessagingServiceAMQPDriver implements MediumMessagingServiceN
     }
 
     @Override
-    public String[] getAvailableTopic() {
+    public String[] getAvailableTopics() {
         // TODO Auto-generated method stub
         return null;
     }

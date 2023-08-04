@@ -92,7 +92,7 @@ public class TestNetworkDriver implements MediumMessagingServiceNetworkDriver {
     }
 
     @Override
-    public String[] getAvailableTopic() {
+    public String[] getAvailableTopics() {
         return this.topics.toArray(new String[this.topics.size()]);
     }
 
