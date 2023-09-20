@@ -1,7 +1,7 @@
 Bithaus Medium
 ======================
 
-**Medium allows developers to use message classes on Kafka with no need of Schema Registry.**
+**Medium allows developers to use message classes on Kafka without Schema Registry having total ordering among different message types on a single topic.**
 
 
 Medium provides an abstraction layer to Kafka or other streaming technologies so that you can use the same message library across your applications without the need of ugly generated message classes or having to worry about what message broker is handling your event. 
@@ -9,13 +9,13 @@ Medium provides an abstraction layer to Kafka or other streaming technologies so
 <br>
 
 ### Why: 
+- **Allow topics to transport multiple types of messages enforcing total ordering.** Very usefull were business data depends on time-correlation and there are different data types involved.
 - Complete reusability of message classes. The whole dev team uses just **one** message library regardless of the underlying message techonology. 
 - No need of Kafka Schema Registry.
   - No Abstract schema declaration and ugly generated classes. 
-  - Class declaration is a very good way of presenting data structures.
+  - Class declaration is a very good way of presenting data structures. 
   - No more incompatible schema problems.
 - No custom Serialization/Deserialization needed. 
-- **Allow topics to transport multiple types of messages.** There are several use cases where you need total ordering among different kinds of events. 
 
 <br>
 
@@ -188,6 +188,8 @@ __Consumer__
 <br>
 
 ## Inspiration:
-Around 2010 the Santiago Stock Exchange (XSGO) launched their new trading infrastructure and went over the top with sub-millisecond and thousands of messages per second load capacity. The team managed to build a consistent messging framework based on (former) IBM WLLM that provided total ordering even on clustered consumers. In order to transport all the different market brokers instructions to the market (new orders, modifications, cancellings, etc) and their corresponding responses, an abstraction layer was developed on top of LLM. It was made of just 2 things. One was a message definition with enough metadata to do routing and deserializing the correct message class on destination. The other was the Messaging Service that interacted with the underlying message technolgy to allow the developer to work only based on message classes. 
+Around 2010 the Santiago Stock Exchange (XSGO) launched their new trading infrastructure and went over the top with sub-millisecond and thousands of messages per second load capacity. The team managed to build a consistent messging framework based on CLLM (former IBM WLLM) that provided total ordering even on clustered consumers. In order to transport all the different market brokers instructions to the market (new orders, modifications, cancellings, etc) and their corresponding responses, an abstraction layer was developed on top of LLM. It was made of just 2 things. One was a message definition with enough metadata to do routing and deserializing the correct message class on destination. The other was the Messaging Service that interacted with the underlying message technolgy to allow the developer to work only based on message classes. 
+
 Around 2013 Cummins Specto, IoT solution for Mining trucks created by Cummins Chile and developed by the Bithaus team, introduced a messaging system inpired in the XSGO experience that abstracted standard underlying MQ brokers (first HornetQ then RabbitMQ). 
+
 Currently we are working on new IoT systems and Kafka has been our streaming technology over the past years. __This project collects our real experience using Kafka to solve common problems that we had that slowed our development cycles.__
