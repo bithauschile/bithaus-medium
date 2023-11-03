@@ -19,6 +19,9 @@ import org.slf4j.LoggerFactory;
 
 import com.timgroup.statsd.Event;
 import com.timgroup.statsd.Event.AlertType;
+
+import io.opentelemetry.api.internal.StringUtils;
+
 import com.timgroup.statsd.NoOpStatsDClient;
 import com.timgroup.statsd.NonBlockingStatsDClient;
 import com.timgroup.statsd.NonBlockingStatsDClientBuilder;
@@ -247,6 +250,13 @@ public class StatsD {
         if(prefix != null && prefix.length() > 0)
             builder.prefix(prefix);
         
+
+        if(!StringUtils.isNullOrEmpty(System.getenv("KUBERNETES_SERVICE_HOST"))) {
+
+            String containerId = System.getenv("HOSTNAME");
+            builder.containerID(containerId);
+        }
+            
 
         NonBlockingStatsDClient client = builder.build();
 
