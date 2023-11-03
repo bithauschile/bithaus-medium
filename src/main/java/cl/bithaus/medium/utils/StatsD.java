@@ -250,13 +250,7 @@ public class StatsD {
         if(prefix != null && prefix.length() > 0)
             builder.prefix(prefix);
         
-
-        if(!StringUtils.isNullOrEmpty(System.getenv("KUBERNETES_SERVICE_HOST"))) {
-
-            String containerId = System.getenv("HOSTNAME");
-            builder.containerID(containerId);
-        }
-            
+        builder.originDetectionEnabled(true); 
 
         NonBlockingStatsDClient client = builder.build();
 
