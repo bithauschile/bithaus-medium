@@ -58,6 +58,8 @@ public class MessageUtils {
         metadata.setTarget(headers.get(MediumMessage.HEADER_MESSAGE_TARGET));
         metadata.setTimestamp(record.getTimestamp());
         metadata.setTopicOffset(record.getOffset());
+        metadata.setTopic(record.getTopic());
+        metadata.setPartition(record.getPartition());
         
         M message = gson.fromJson(record.getValue(), messageClass);        
         message.setMetadata(metadata);
