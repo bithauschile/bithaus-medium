@@ -78,11 +78,12 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
         Map<String,String> headers = MediumStreamRecordConverter.getHeadersMap(record.headers());
         String topic = metadata.topic();
         Long offset = metadata.offset();
+        Integer partition = metadata.partition();
         
         
         try {
             
-            onData(record, headers, topic, offset);             
+            onData(record, headers, topic, partition, offset);             
             
         }
         catch(MediumMessagingServiceException e) {
@@ -109,7 +110,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
     }      
     
     @WithSpan
-    private void onData(Record<String,String> record, Map<String,String> headers, String topic, Long offset) throws MediumMessagingServiceException, SendToDeadLetterException {
+    private void onData(Record<String,String> record, Map<String,String> headers, String topic, Integer partition, Long offset) throws MediumMessagingServiceException, SendToDeadLetterException {
                
         Class<? extends I> expectedMessageClass = this.getInputMessageClass();
         String incommingMessageClassString = headers.get(MediumMessage.HEADER_MESSAGE_CLASS);
@@ -140,7 +141,7 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
             return;
         
         
-        I message = MediumStreamRecordConverter.toMedium(expectedMessageClass, record, topic, offset);
+        I message = MediumStreamRecordConverter.toMedium(expectedMessageClass, record, topic, partition, offset);
         if(logger.isTraceEnabled())
             logger.trace("Dispatching message " + message.getUuid() + " to message handler method"); 
         

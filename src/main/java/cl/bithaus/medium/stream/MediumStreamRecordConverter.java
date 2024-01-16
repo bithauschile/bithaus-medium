@@ -57,10 +57,11 @@ public class MediumStreamRecordConverter {
      * @param messageClass Medium message class
      * @param record incoming record
      * @param topic topic from this message from received from
+     * @param partition partition from this message from received from
      * @param offset offset in the topic for this message
      * @return deserialized Medium message
      */
-    public static <M extends MediumMessage> M toMedium(Class<M> messageClass, Record<String,String> record, String topic, Long offset) {
+    public static <M extends MediumMessage> M toMedium(Class<M> messageClass, Record<String,String> record, String topic, Integer partition, Long offset) {
         
         Map<String,String> headers = new HashMap<>();
         
@@ -75,7 +76,8 @@ public class MediumStreamRecordConverter {
         metadata.setSource(headers.get(MediumMessage.HEADER_MESSAGE_SOURCE));
         metadata.setTarget(headers.get(MediumMessage.HEADER_MESSAGE_TARGET));
         metadata.setTimestamp(record.timestamp());
-        metadata.setTopicOffset(offset);
+        metadata.setTopicOffset(offset);        
+        metadata.setPartition(partition);
         
         M message = gson.fromJson(record.value(), messageClass);        
         message.setMetadata(metadata);
@@ -113,7 +115,7 @@ public class MediumStreamRecordConverter {
         return new TestRecord<>(MediumKafkaUtils.fromMediumProducerRecord(mpr));        
     }     
     
-    public static <M extends MediumMessage> M toMedium(Class<M> messageClass, TestRecord<String,String> record, String topic, Long offset) { 
+    public static <M extends MediumMessage> M toMedium(Class<M> messageClass, TestRecord<String,String> record, String topic, Integer partition, Long offset) { 
         
         Map<String,String> headers = new HashMap<>();
         
@@ -129,6 +131,7 @@ public class MediumStreamRecordConverter {
         metadata.setTarget(headers.get(MediumMessage.HEADER_MESSAGE_TARGET));
         metadata.setTimestamp(record.timestamp());
         metadata.setTopicOffset(offset);
+        metadata.setPartition(partition);
         
         M message = gson.fromJson(record.value(), messageClass);        
         message.setMetadata(metadata);
