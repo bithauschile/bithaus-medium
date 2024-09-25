@@ -90,6 +90,7 @@ public class MediumKafkaUtils {
         metadata.setTarget(headers.get(MediumMessage.HEADER_MESSAGE_TARGET));
         metadata.setTimestamp(kr.timestamp());
         metadata.setTopicOffset(kr.offset());
+        metadata.setPartition(kr.partition());
         
         String messageClassStr = headers.get(MediumMessage.HEADER_MESSAGE_CLASS);
         Class<M> messageClass = (Class<M>) Class.forName(messageClassStr);

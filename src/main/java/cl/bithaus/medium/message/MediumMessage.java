@@ -72,6 +72,8 @@ public abstract class MediumMessage {
         private String rxTopic;
         private String txTopic;
         private Long topicOffset;
+        private String topic;
+        private Integer partition;
 
         public String getKey() {
             return key;
@@ -156,6 +158,28 @@ public abstract class MediumMessage {
             this.topicOffset = topicOffset;
         }
 
+        public String getTopic() {
+            return topic;
+        }
+
+        /**
+         * Sets the topic and updates the headers
+         * @param topic 
+         */
+        public void setTopic(String topic) {
+            this.topic = topic;
+        }
+        
+        public Integer getPartition() {
+            return partition;
+        }
+
+        public void setPartition(Integer partition) {
+            this.partition = partition;
+        }
+
+
+
         @Override
         public int hashCode() {
             int hash = 7;
@@ -167,6 +191,8 @@ public abstract class MediumMessage {
             hash = 83 * hash + Objects.hashCode(this.rxTopic);
             hash = 83 * hash + Objects.hashCode(this.txTopic);
             hash = 83 * hash + Objects.hashCode(this.topicOffset);
+            hash = 83 * hash + Objects.hashCode(this.topic);
+            hash = 83 * hash + Objects.hashCode(this.partition);
             return hash;
         }
 
@@ -204,6 +230,12 @@ public abstract class MediumMessage {
                 return false;
             }
             if (!Objects.equals(this.topicOffset, other.topicOffset)) {
+                return false;
+            }
+            if (!Objects.equals(this.topic, other.topic)) {
+                return false;
+            }
+            if (!Objects.equals(this.partition, other.partition)) {
                 return false;
             }
             return true;
