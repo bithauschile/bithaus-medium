@@ -79,7 +79,7 @@ public class MediumMessagingServiceMQTTDriver implements MediumMessagingServiceN
             this.config = new MediumMessagingServiceMQTTDriverConfig(driverProperties);
             this.callback = callback;
 
-            String clientId = this.config.getUsername();
+            String clientId = this.config.getClientID();
 
             if(clientId == null || clientId.length() == 0)
                 clientId = MqttClient.generateClientId();

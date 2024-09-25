@@ -12,6 +12,9 @@ public class MediumMessagingServiceMQTTDriverConfig extends AbstractConfig {
     public static final String BROKER_URL_CONFIG = "mqtt.broker.url";
     public static final String BROKER_URL_DOC = "MQTT Broker URL";
 
+    public static final String CLIENTID_CONFIG = "mqtt.clientid";
+    public static final String CLIENTID_DOC = "MQTT Client ID";
+
     public static final String USERNAME_CONFIG = "mqtt.username";
     public static final String USERNAME_DOC = "MQTT Username";
 
@@ -49,6 +52,7 @@ public class MediumMessagingServiceMQTTDriverConfig extends AbstractConfig {
             .define(CACERTIFICATE_FILENAME_COONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.HIGH, CACERTIFICATE_FILENAME_DOC)
             .define(CLIENT_CERTIFICATE_FILENAME, ConfigDef.Type.STRING, null, ConfigDef.Importance.HIGH, CLIENT_CERTIFICATE_FILENAME_DOC)
             .define(PRIVATE_KEY_FILENAME, ConfigDef.Type.STRING, null, ConfigDef.Importance.HIGH, PRIVATE_KEY_FILENAME_DOC)
+            .define(CLIENTID_CONFIG, ConfigDef.Type.STRING, null, ConfigDef.Importance.HIGH, CLIENTID_DOC)
             ;
     }
 
@@ -58,6 +62,10 @@ public class MediumMessagingServiceMQTTDriverConfig extends AbstractConfig {
 
     public String getUsername() {
         return this.getString(USERNAME_CONFIG);
+    }
+
+    public String getClientID() {
+        return this.getString(CLIENTID_CONFIG);
     }
 
     public Password getPassword() {
