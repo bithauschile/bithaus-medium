@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cl.bithaus</groupId>
     <artifactId>bithaus-medium</artifactId>
-    <version>1.2.20</version>
+    <version>1.2.21</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>2.11.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -92,32 +92,32 @@
  		<dependency>
 			<groupId>com.datadoghq</groupId>
 			<artifactId>java-dogstatsd-client</artifactId>
-			<version>4.2.0</version>            
+			<version>4.4.3</version>            
 		</dependency>	 
         <dependency>
             <groupId>io.opentelemetry.instrumentation</groupId>
             <artifactId>opentelemetry-instrumentation-annotations</artifactId>
-            <version>1.31.0</version>
+            <version>1.33.6</version>
         </dependency>        
 
         <!-- KAFKA -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
-            <version>3.6.0</version>
+            <version>3.8.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-streams</artifactId>
-            <version>3.6.0</version>
+            <version>3.8.0</version>
         </dependency>
 
         <!-- AMQP -->
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
-            <version>2.5.0</version>
+            <version>2.6.1</version>
         </dependency>
 
         <dependency>
@@ -135,21 +135,21 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk18on</artifactId>
-            <version>1.76</version>
+            <version>1.78.1</version>
         </dependency>        
         
         <!-- TEST -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
+            <version>5.11.2</version>
             <scope>test</scope>
         </dependency>
            
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-streams-test-utils</artifactId>
-            <version>3.6.0</version>
+            <version>3.8.0</version>
         </dependency>
     </dependencies>
     
