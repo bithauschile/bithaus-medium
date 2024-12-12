@@ -107,6 +107,15 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
             }
             
         }
+        catch(Exception e) {
+
+            logger.error("Error processing record " + record, e);
+            
+            this.statsD.recordException("Error processing record", e);
+
+            throw e;
+                    
+        }
     }      
     
     @WithSpan
