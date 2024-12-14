@@ -90,7 +90,8 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
             
             logger.error("Error processing record " + record, e);
 
-            this.statsD.recordException("Error processing record", e);
+            if(this.statsD != null)
+                this.statsD.recordException("Error processing record", e);
             
             if(this.badDataConsumer != null) {
                 
@@ -111,7 +112,8 @@ public abstract class MediumProcessor<I extends MediumMessage, O extends MediumM
 
             logger.error("Error processing record " + record, e);
             
-            this.statsD.recordException("Error processing record", e);
+            if(this.statsD != null)
+                this.statsD.recordException("Error processing record", e);
 
             throw e;
                     
